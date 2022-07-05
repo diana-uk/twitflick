@@ -148,6 +148,9 @@ public class UserFeedFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // File not found
+                if (getActivity() == null) {
+                    return;
+                }
                 setNoImageUI();
             }
         });

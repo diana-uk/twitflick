@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Twitflick</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_username">Enter username</string>
+    <string name="please_enter_username">Please enter username</string>
+    <string name="next">next</string>
+    <string name="what_is_your_username">What\'s your username?</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="unknown_error">Unknown Error</string>
+    <string name="sign_in_cancelled">Sign In Cancelled</string>
+    <string name="no_reviews">No reviews</string>
+    <string name="no_friend_requests">No Friend Requests</string>
+    <string name="no_users">No users</string>
+    <string name="no_users_found_with_username">\"No users found with username : \"</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="no_username">No Username</string>
+    <string name="username_exists">Username already exists, please enter another username</string>
+    <string name="username_empty">Username can not be empty</string>
+    <string name="enter_valid_username">Please enter a valid username</string>
+    <string name="username_required">Username is required</string>
+</resources>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#BDBDBD"
+        android:orientation="vertical"
+        tools:context=".fragments.UserFeedFragment">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/fragmentUserFeed_IMGBTN_exit"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:background="@color/fui_transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_exit" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/fragmentUserFeed_IMGBTN_addFriend"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/circle_view"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_add_friend" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/aloevera"
+                    android:text="@string/add_friend"
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fragmentUserFeed_TXT_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/aloevera"
+                    android:text="***USERNAME***"
+                    android:textColor="@color/black" />
+
+                <!-- Circular Image View  -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/fragmentUserFeed_CIMG_userCircularImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/circle_bordered_view"
+                    android:elevation="100dp"
+                    app:civ_border_color="#D6D6D6"
+                    app:civ_border_width="5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fragmentUserFeed_BTN_uploadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="30dp"
+                    android:fontFamily="@font/aloevera"
+                    android:text="Upload Image"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:elevation="10dp"
+                    app:icon="@drawable/ic_file_upload"
+                    app:iconTint="@color/black"
+                    style="@style/Widget.Material3.Button.ElevatedButton" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"></LinearLayout>
+
+
+    </LinearLayout>
+</layout>

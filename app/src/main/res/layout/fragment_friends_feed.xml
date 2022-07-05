@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="#BDBDBD"
+        android:layout_height="match_parent"
+        tools:context=".fragments.FriendsFeedFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friendsFeedFragment_RV_recyclerView"
+            android:layout_margin="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/friendsFeedFragment_TXT_noReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="@string/no_reviews"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+</layout>

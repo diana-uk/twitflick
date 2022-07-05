@@ -139,6 +139,7 @@ public class FriendsFeedFragment extends Fragment {
 
         findViews();
         setRecyclerView();
+        setReviewsUI();
 
         return view;
     }

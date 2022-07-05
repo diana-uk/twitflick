@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class DatabaseManager {
     public static DatabaseManager INSTANCE = null;
@@ -299,7 +300,7 @@ public class DatabaseManager {
     public void addReviewDataToFirebase() {
         // we are use add value event listener method
         // which is called with database reference.
-        databaseReference.child ("ReviewData").child (currentUser.getUserId ()).child ("Review").setValue (DataManager.getInstance ().getReviewData ());
+        databaseReference.child ("ReviewData").child (currentUser.getUserId ()).child (UUID.randomUUID ().toString ()).setValue (DataManager.getInstance ().getReviewData ());
     }
 
 

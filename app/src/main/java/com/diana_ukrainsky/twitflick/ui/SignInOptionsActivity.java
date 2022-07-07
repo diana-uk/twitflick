@@ -28,8 +28,8 @@ public class SignInOptionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_sign_in_options);
-        findViews();
-        checkIfUserSignedIn();
+        findViews ();
+        checkIfUserSignedIn ();
     }
 
     private void findViews() {
@@ -38,20 +38,41 @@ public class SignInOptionsActivity extends AppCompatActivity {
 
     private List<AuthUI.IdpConfig> getSelectedProviders() {
         // Choose authentication providers
-        return Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
+        return Arrays.asList (
+                new AuthUI.IdpConfig.EmailBuilder ().build (),
+                new AuthUI.IdpConfig.PhoneBuilder ().build (),
+                new AuthUI.IdpConfig.GoogleBuilder ().build (),
 //                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.TwitterBuilder().build());
+                new AuthUI.IdpConfig.TwitterBuilder ().build ());
     }
 
-    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
+    private void launchSignInActivity() {
+// Create and launch sign-in intent
+        Intent signInIntent = AuthUI.getInstance ()
+                .createSignInIntentBuilder ()
+                .setAvailableProviders (getSelectedProviders ())
+                .setLogo (R.drawable.ic_twitflick_icon)
+                .setTosAndPrivacyPolicyUrls ("https://firebase.google.com/docs/auth/android/firebaseui", "")
+                .build ();
+        signInLauncher.launch (signInIntent);
+    }
 
-        if (result.getResultCode() == RESULT_OK) {
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult (
+            new FirebaseAuthUIActivityResultContract (),
+            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult> () {
+                @Override
+                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    onSignInResult (result);
+                }
+            }
+    );
+
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse ();
+
+        if (result.getResultCode () == RESULT_OK) {
             // Successfully signed in
-            DatabaseManager.getInstance().setCurrentFirebaseUser ();
+            DatabaseManager.getInstance ().setCurrentFirebaseUser ();
             handleSignedInUser ();
         } else {
             // Sign in failed. If response is null the user canceled the
@@ -60,67 +81,44 @@ public class SignInOptionsActivity extends AppCompatActivity {
             // ...
             if (response == null) {
                 // User pressed back button
-                AlertUtils.showToast(getApplicationContext(),getString(R.string.sign_in_cancelled));
+                AlertUtils.showToast (getApplicationContext (), getString (R.string.sign_in_cancelled));
                 return;
             }
 
-            if (Objects.requireNonNull(response.getError()).getErrorCode() == ErrorCodes.NO_NETWORK) {
-                AlertUtils.showToast(getApplicationContext(),getString(R.string.no_internet_connection));
+            if (Objects.requireNonNull (response.getError ()).getErrorCode () == ErrorCodes.NO_NETWORK) {
+                AlertUtils.showToast (getApplicationContext (), getString (R.string.no_internet_connection));
                 return;
             }
-            AlertUtils.showToast(getApplicationContext(),getString(R.string.unknown_error));
+            AlertUtils.showToast (getApplicationContext (), getString (R.string.unknown_error));
         }
     }
 
     private void startUserDetailsActivity() {
-        Intent intent = new Intent (this,UserDetailsActivity.class);
+        Intent intent = new Intent (this, UserDetailsActivity.class);
         startActivity (intent);
     }
 
     private void checkIfUserSignedIn() {
-        if (DatabaseManager.getInstance ().isUserSignedIn()) {
+        if (DatabaseManager.getInstance ().isUserSignedIn ()) {
             handleDeletedUser ();
-        }
-        else
-            launchSignInActivity();
+        } else
+            launchSignInActivity ();
     }
 
     private void handleDeletedUser() {
         DatabaseManager.getInstance ().handleDeletedAuthUser (getApplicationContext (), new Callback_handleSignOut () {
             @Override
             public void isSignOut(boolean isSignedOut) {
-                if(isSignedOut)
-                    launchSignInActivity();
+                if (isSignedOut)
+                    launchSignInActivity ();
                 else {
                     DatabaseManager.getInstance ().initCurrentUserFromFirebase ();
                     DatabaseManager.getInstance ().setReferences ();
-                    startBottomNavigationActivity();
+                    startBottomNavigationActivity ();
                 }
             }
         });
-
     }
-
-    private void launchSignInActivity() {
-// Create and launch sign-in intent
-        Intent signInIntent = AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(getSelectedProviders())
-                .setLogo (R.drawable.ic_twitflick_icon)
-                .setTosAndPrivacyPolicyUrls ("https://firebase.google.com/docs/auth/android/firebaseui","")
-                .build();
-        signInLauncher.launch(signInIntent);
-    }
-
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract (),
-            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult> () {
-                @Override
-                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    onSignInResult(result);
-                }
-            }
-    );
 
     private void startBottomNavigationActivity() {
         Intent intent = new Intent (this, BottomNavigationActivity.class);
@@ -131,19 +129,17 @@ public class SignInOptionsActivity extends AppCompatActivity {
         DatabaseManager.getInstance ().handleSignedInUser (new Callback_handleSignedInUser () {
             @Override
             public void isUserExist(boolean isExist) {
-                if(!isExist)
-                    startUserDetailsActivity();
+                if (!isExist)
+                    startUserDetailsActivity ();
                 else {
-                    DatabaseManager.getInstance().setCurrentFirebaseUser ();
+                    DatabaseManager.getInstance ().setCurrentFirebaseUser ();
                     DatabaseManager.getInstance ().initCurrentUserFromFirebase ();
                     DatabaseManager.getInstance ().setReferences ();
                     startBottomNavigationActivity ();
-                    finish();
+                    finish ();
                 }
             }
         });
-
     }
-
 
 }

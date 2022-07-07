@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MovieData implements Serializable,Comparable<MovieData> {
+public class MovieData implements Serializable {
     public MovieData() {
     }
 
@@ -47,29 +47,6 @@ public class MovieData implements Serializable,Comparable<MovieData> {
 
     @SerializedName("imdbID")
     String imdbId;
-
-
-    public MovieData(String poster, String title, String year, String genre, String duration, String plot, String releaseDate, String director, String writer, String actors, String language, String imdbRating, String metaScore) {
-        Poster = poster;
-        this.title = title;
-        Year = year;
-        this.genre = genre;
-        this.duration = duration;
-        this.plot = plot;
-        this.releaseDate = releaseDate;
-        this.director = director;
-        this.writer = writer;
-        this.actors = actors;
-        this.language = language;
-        this.imdbRating = imdbRating;
-        this.metaScore = metaScore;
-    }
-
-    public MovieData(String poster, String title, String year) {
-        Poster = poster;
-        this.title = title;
-        Year = year;
-    }
 
     public String getTitle() {
         return title;
@@ -182,10 +159,5 @@ public class MovieData implements Serializable,Comparable<MovieData> {
     public MovieData setImdbId(String imdbId) {
         this.imdbId = imdbId;
         return this;
-    }
-
-    @Override
-    public int compareTo(MovieData movie) {
-        return this.getImdbId ().compareTo(movie.getImdbId ());
     }
 }

@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 
 import com.diana_ukrainsky.twitflick.R;
 import com.diana_ukrainsky.twitflick.adapter.MovieAdapter;
+import com.diana_ukrainsky.twitflick.callbacks.Callback_retrofitResponse;
+import com.diana_ukrainsky.twitflick.logic.RetrofitManager;
 import com.diana_ukrainsky.twitflick.models.MovieList;
 import com.diana_ukrainsky.twitflick.models.MovieData;
 import com.diana_ukrainsky.twitflick.retrofit.RetrofitService;
@@ -29,12 +31,10 @@ public class SearchMovieActivity extends AppCompatActivity {
     public static SearchMovieActivity instance = null;
 
     private LinearLayoutManager linearLayoutManager;
-
     private MovieAdapter movieAdapter;
-    private  RetrofitService retrofitService;
     //********** Pagination *************
     private ProgressBar searchMovie_PB_progressBar;
-    private final int MAX_RESULTS_IN_PAGE=10;
+    private final int MAX_RESULTS_IN_PAGE = 10;
     private static final int PAGE_START = 1;
     private boolean isLoading = false;
     private boolean isLastPage = false;
@@ -44,7 +44,6 @@ public class SearchMovieActivity extends AppCompatActivity {
     private SearchView searchMovie_SV_searchMovie;
     private RecyclerView recyclerView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -52,10 +51,14 @@ public class SearchMovieActivity extends AppCompatActivity {
         setContentView (R.layout.activity_search_movie);
 
         findViews ();
-        setViews();
-        setAdapter();
+        setViews ();
+        setAdapter ();
         setSearchView ();
         setListeners ();
+    }
+
+    public static SearchMovieActivity getInstance() {
+        return instance;
     }
 
     private void setAdapter() {
@@ -64,20 +67,20 @@ public class SearchMovieActivity extends AppCompatActivity {
     }
 
     private void setViews() {
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setHasFixedSize (true);
         recyclerView.setLayoutManager (linearLayoutManager);
-        searchMovie_PB_progressBar.setVisibility(View.INVISIBLE);
+        searchMovie_PB_progressBar.setVisibility (View.INVISIBLE);
     }
 
     private void loadMoreItems(String movieName) {
-        recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+        recyclerView.addOnScrollListener (new PaginationScrollListener (linearLayoutManager) {
             @Override
             protected void loadMoreItems() {
-                searchMovie_PB_progressBar.setVisibility(View.VISIBLE);
+                searchMovie_PB_progressBar.setVisibility (View.VISIBLE);
                 isLoading = true;
                 currentPage += 1;
-                loadNextPage(movieName);
+                loadNextPage (movieName);
             }
 
             @Override
@@ -92,41 +95,45 @@ public class SearchMovieActivity extends AppCompatActivity {
         });
     }
 
-    private void loadNextPage(String title) {
-        retrofitService = new RetrofitService ();
-
-        JsonApiMovies jsonApiMovies = retrofitService.getRetrofit ().create (JsonApiMovies.class);
-
-        Call<MovieList> call = jsonApiMovies.getMoviesByPage ("", "407f78ba", title, currentPage);
-        call.enqueue (new Callback<MovieList> () {
-
+    private void loadFirstPage(String title) {
+        RetrofitManager.getInstance ().getMovieList (currentPage,title,new Callback_retrofitResponse<MovieList> () {
             @Override
-            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
-                if (!response.isSuccessful ()) {
-                    Log.d ("pttt", "Response error  body : " + response.errorBody () + ", Response code: " + response.code ());
-                } else {
-                    if (response.body () == null || response.body ().getTotalResults () == 0) {
-                        AlertUtils.showToast (getApplicationContext (), response.body ().getError ());
-                        Log.d ("pttt", "Response message: " + response.message () + ", Total results " + response.body ().getTotalResults () + ", Response code: " + response.code () + " Response body: " + response.body ()
-                                + "Error body: " + response.errorBody () + " Response: " + response.body ().getResponse () + " Error: " + response.body ().getError ());
-                    } else {
-                        movieAdapter.removeLoadingFooter();
-                        isLoading = false;
+            public void getResult(MovieList movieList) {
+                if (movieList == null || movieList.getTotalResults () ==0) {
+                    assert movieList != null;
+                    AlertUtils.showToast (getApplicationContext (), movieList.getError ());
+                    searchMovie_PB_progressBar.setVisibility (View.GONE);
+                }
+                else {
+                    totalPages = movieList.getTotalResults () / MAX_RESULTS_IN_PAGE;
+                    searchMovie_PB_progressBar.setVisibility (View.GONE);
+                    movieAdapter.updateAll (movieList.getMovies ());
+                    recyclerView.setAdapter (movieAdapter);
 
-                        totalPages = response.body ().getTotalResults ()/MAX_RESULTS_IN_PAGE;
-
-                        MovieList moviesList = response.body ();
-                        movieAdapter.addAll (moviesList.getMovies ());
-
-                        if (currentPage != totalPages) movieAdapter.addLoadingFooter();
-                        else isLastPage = true;
-                    }
+                    if (currentPage <= totalPages) movieAdapter.addLoadingFooter ();
+                    else isLastPage = true;
                 }
             }
+        });
+    }
 
+    private void loadNextPage(String title) {
+        RetrofitManager.getInstance ().getMovieList (currentPage,title,new Callback_retrofitResponse<MovieList> () {
             @Override
-            public void onFailure(Call<MovieList> call, Throwable t) {
-                Log.d ("pttt", "Failure!!!, Message: " + t.getMessage ());
+            public void getResult(MovieList movieList) {
+                if (movieList == null || movieList.getTotalResults () ==0) {
+                    AlertUtils.showToast (getApplicationContext (), movieList.getError ());
+                    searchMovie_PB_progressBar.setVisibility (View.GONE);
+                }
+                else {
+                    movieAdapter.removeLoadingFooter ();
+                    isLoading = false;
+                    totalPages = movieList.getTotalResults () / MAX_RESULTS_IN_PAGE;
+                    movieAdapter.addAll (movieList.getMovies ());
+
+                    if (currentPage != totalPages) movieAdapter.addLoadingFooter ();
+                    else isLastPage = true;
+                }
             }
         });
     }
@@ -136,7 +143,7 @@ public class SearchMovieActivity extends AppCompatActivity {
         searchMovie_SV_searchMovie.setOnQueryTextListener (new SearchView.OnQueryTextListener () {
             @Override
             public boolean onQueryTextSubmit(String title) {
-                searchMovie_PB_progressBar.setVisibility(View.VISIBLE);
+                searchMovie_PB_progressBar.setVisibility (View.VISIBLE);
                 filterList (title);
                 return true;
             }
@@ -154,50 +161,9 @@ public class SearchMovieActivity extends AppCompatActivity {
         else {
             // *** Use of pagination ***
             loadMoreItems (title);
-            loadFirstPage(title);
+            loadFirstPage (title);
             //**********************
         }
-    }
-
-    private void loadFirstPage(String title) {
-        retrofitService = new RetrofitService ();
-
-        JsonApiMovies jsonApiMovies = retrofitService.getRetrofit ().create (JsonApiMovies.class);
-
-        Call<MovieList> call = jsonApiMovies.getMoviesByPage ("", "407f78ba", title, currentPage);
-        call.enqueue (new Callback<MovieList> () {
-
-            @Override
-            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
-                if (!response.isSuccessful ()) {
-                    Log.d ("pttt", "Response error  body : " + response.errorBody () + ", Response code: " + response.code ());
-                } else {
-                    if (response.body () == null || response.body ().getTotalResults () == 0) {
-                        AlertUtils.showToast (getApplicationContext (), response.body ().getError ());
-                        Log.d ("pttt", "Response message: " + response.message () + ", Total results " + response.body ().getTotalResults () + ", Response code: " + response.code () + " Response body: " + response.body ()
-                                + "Error body: " + response.errorBody () + " Response: " + response.body ().getResponse () + " Error: " + response.body ().getError ());
-                    } else {
-                        totalPages = response.body ().getTotalResults ()/MAX_RESULTS_IN_PAGE;
-                        MovieList moviesList = response.body ();
-                        searchMovie_PB_progressBar.setVisibility(View.GONE);
-                        movieAdapter.updateAll (moviesList.getMovies ());
-                        recyclerView.setAdapter (movieAdapter);
-
-                        if (currentPage <= totalPages) movieAdapter.addLoadingFooter();
-                        else isLastPage = true;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieList> call, Throwable t) {
-                Log.d ("pttt", "Failure!!!, Message: " + t.getMessage ());
-            }
-        });
-    }
-
-    public static SearchMovieActivity getInstance() {
-        return instance;
     }
 
     private void setListeners() {
@@ -206,38 +172,11 @@ public class SearchMovieActivity extends AppCompatActivity {
 
     private void updateAdapter(MovieList moviesList) {
         List<MovieData> movieList = new ArrayList<> ();
-        for (MovieData movie:moviesList.getMovies ()) {
+        for (MovieData movie : moviesList.getMovies ()) {
             movieList.add (movie);
         }
-        movieAdapter = new MovieAdapter (movieList,getApplicationContext ());
+        movieAdapter = new MovieAdapter (movieList, getApplicationContext ());
         recyclerView.setAdapter (movieAdapter);
-    }
-
-    private void searchMovie() {
-        RetrofitService retrofitService = new RetrofitService ();
-
-        JsonApiMovies jsonApiMovies = retrofitService.getRetrofit ().create (JsonApiMovies.class);
-
-        Call<MovieData> call = jsonApiMovies.getMovieDetails ("", "407f78ba", "MAN");
-        call.enqueue (new Callback<MovieData> () {
-
-            @Override
-            public void onResponse(Call<MovieData> call, Response<MovieData> response) {
-                if (!response.isSuccessful ()) {
-                    Log.d ("pttt", "hello" + response.message ());
-
-                } else {
-                    MovieData movie = response.body ();
-                    Log.d ("pttt", "title: " + movie.getTitle ().toString ());
-                    //    initData (movie);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieData> call, Throwable t) {
-                Log.d ("pttt", "Failure!!!, Message: " + t.getMessage ());
-            }
-        });
     }
 
     private void findViews() {

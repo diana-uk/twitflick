@@ -53,9 +53,9 @@ public class DatabaseManager {
     private final FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    // instance for firebase storage and StorageReference
-    FirebaseStorage storage;
-    StorageReference storageReference;
+    // Instance for firebase storage and StorageReference
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     private FirebaseUser firebaseUser;
     private CurrentUser currentUser;
@@ -76,8 +76,8 @@ public class DatabaseManager {
         setDatabaseReference ();
         setReferences ();
         setStorageReference ();
-        setCurrentUser ();
         setCurrentFirebaseUser ();
+        setCurrentUser ();
     }
 
     public static DatabaseManager getInstance() {
@@ -87,10 +87,36 @@ public class DatabaseManager {
         return INSTANCE;
     }
 
+    private void setDatabaseReference() {
+        databaseReference = database.getReference ("AppData");
+    }
+
     public void setReferences() {
         reviewsReference = databaseReference.child ("ReviewData");
         usersReference = databaseReference.child ("Users");
         usernamesReference = databaseReference.child ("Usernames");
+    }
+
+    public void setStorageReference() {
+        // get the Firebase  storage reference
+        storage = FirebaseStorage.getInstance ();
+        storageReference = storage.getReference ();
+    }
+
+    public StorageReference getStorageReference() {
+        return storageReference;
+    }
+
+    public void setCurrentFirebaseUser() {
+        firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
+    }
+
+    public FirebaseUser getFirebaseUser() {
+        return firebaseUser;
+    }
+
+    private void setCurrentUser() {
+        currentUser = CurrentUser.getInstance ();
     }
 
     public void setCurrentUserReferences() {
@@ -105,34 +131,15 @@ public class DatabaseManager {
                 .child ("User")
                 .child (currentUser.getUserId ()).
                 child ("Friends");
-
-        reviewsReference = databaseReference.child ("ReviewData");
     }
 
-    private void setDatabaseReference() {
-        databaseReference = database.getReference ("AppData");
+    public void userSignedOut() {
+        INSTANCE = null;
     }
 
-    private void setCurrentUser() {
-        currentUser = CurrentUser.getInstance ();
-    }
-
-    public void setCurrentFirebaseUser() {
-        firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
-    }
-
-    public FirebaseUser getFirebaseUser() {
-        return firebaseUser;
-    }
-
-    public void setStorageReference() {
-        // get the Firebase  storage reference
-        storage = FirebaseStorage.getInstance ();
-        storageReference = storage.getReference ();
-    }
-
-    public StorageReference getStorageReference() {
-        return storageReference;
+    public boolean isUserSignedIn() {
+        if (firebaseUser != null && firebaseUser.getUid ()!=null) return true;
+        return false;
     }
 
     //****************************** Write ****************************************************************
@@ -146,26 +153,6 @@ public class DatabaseManager {
         databaseReference.child ("Usernames")
                 .child (currentUser.getUserId ())
                 .setValue (currentUser.getUsername ());
-    }
-
-    public void handleSignedInUser(Callback_handleSignedInUser callback_handleSignedInUser) {
-        databaseReference.child ("Usernames").child (firebaseUser.getUid ()).addListenerForSingleValueEvent (new ValueEventListener () {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String uId = snapshot.getValue (String.class);
-                //TODO: check if user has username too
-                if (uId != null && callback_handleSignedInUser!=null)
-                    callback_handleSignedInUser.isUserExist (true);
-                else {
-                    assert callback_handleSignedInUser != null;
-                    callback_handleSignedInUser.isUserExist (false);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
     }
 
     public void initCurrentUserFromFirebase() {
@@ -194,13 +181,24 @@ public class DatabaseManager {
         });
     }
 
-    public boolean isUserSignedIn() {
-        if (firebaseUser != null && firebaseUser.getUid ()!=null) return true;
-        return false;
-    }
+    public void handleSignedInUser(Callback_handleSignedInUser callback_handleSignedInUser) {
+        databaseReference.child ("Usernames").child (firebaseUser.getUid ()).addListenerForSingleValueEvent (new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String uId = snapshot.getValue (String.class);
+                //TODO: check if user has username too
+                if (uId != null && callback_handleSignedInUser!=null)
+                    callback_handleSignedInUser.isUserExist (true);
+                else {
+                    assert callback_handleSignedInUser != null;
+                    callback_handleSignedInUser.isUserExist (false);
+                }
+            }
 
-    public void userSignedOut() {
-        INSTANCE = null;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     public void acceptFriendRequestDB(GeneralUser friendRequestItem) {

@@ -1,9 +1,7 @@
 package com.diana_ukrainsky.twitflick.models;
 
 public class Genre {
-
     public static final String HASHTAG = "#";
-
     private String genre;
 
     public Genre() {

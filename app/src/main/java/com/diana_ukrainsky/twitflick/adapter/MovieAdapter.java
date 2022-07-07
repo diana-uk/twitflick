@@ -20,6 +20,7 @@ import com.diana_ukrainsky.twitflick.models.MovieData;
 import com.diana_ukrainsky.twitflick.retrofit.RetrofitService;
 import com.diana_ukrainsky.twitflick.service.JsonApiMovies;
 import com.diana_ukrainsky.twitflick.ui.AddReviewActivity;
+import com.diana_ukrainsky.twitflick.utils.Constants;
 import com.diana_ukrainsky.twitflick.utils.ImageUtils;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -88,7 +89,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 movieViewHolder.itemView.setOnClickListener (new View.OnClickListener () {
                     @Override
                     public void onClick(View v) {
-                        Log.d ("pttt", "movie clicked title:  "+movieItem.getTitle ()+" genres: "+movieItem.getGenre ());
+                        Log.d (Constants.LOG_TAG, "movie clicked title:  "+movieItem.getTitle ()+" genres: "+movieItem.getGenre ());
                         searchMovieByIMDbId(movieItem);
                     }
                 });

@@ -1,6 +1,7 @@
 package com.diana_ukrainsky.twitflick.models;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -90,4 +91,5 @@ public class ReviewData {
         this.date = date;
         return this;
     }
+
 }

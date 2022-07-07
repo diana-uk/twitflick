@@ -185,5 +185,4 @@ public class SearchMovieActivity extends AppCompatActivity {
         recyclerView = findViewById (R.id.searchMovie_RV_recyclerView);
 
     }
-
 }

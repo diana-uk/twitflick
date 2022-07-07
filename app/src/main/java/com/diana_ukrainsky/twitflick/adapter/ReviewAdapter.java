@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diana_ukrainsky.twitflick.R;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setUsername;
+import com.diana_ukrainsky.twitflick.fragments.FriendsFeedFragment;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
 import com.diana_ukrainsky.twitflick.models.Genre;
+import com.diana_ukrainsky.twitflick.models.MovieData;
 import com.diana_ukrainsky.twitflick.models.ReviewData;
 import com.diana_ukrainsky.twitflick.utils.AlertUtils;
 import com.diana_ukrainsky.twitflick.utils.Constants;
@@ -24,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
@@ -33,6 +36,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public ReviewAdapter(List<ReviewData> myReviewData, Context context) {
         this.myReviewData = myReviewData;
         this.context = context;
+    }
+
+    public ReviewAdapter(Context context) {
+        this.context = context;
+        myReviewData = new ArrayList<> ();
     }
 
     @NonNull
@@ -51,10 +59,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.reviewItemList_TXT_movieName.setText (reviewDataItem.getMovieName ());
         holder.reviewItemList_TXT_movieDate.setText (reviewDataItem.getMovieDate ());
         holder.reviewItemList_TXT_reviewedMovieName.setText (reviewDataItem.getMovieName ());
-        setUsernameUI (reviewDataItem.getUserID (),holder.reviewItemList_TXT_reviewerName);
+        setUsernameUI (reviewDataItem.getUserID (), holder.reviewItemList_TXT_reviewerName);
         holder.reviewItemList_TXT_reviewText.setText (reviewDataItem.getReviewText ());
         holder.reviewItemList_RB_ratingBar.setRating (reviewDataItem.getRating ());
-        setUserImageUI (reviewDataItem.getUserID (),holder.reviewItemList_CIMG_imageViewCircular);
+        setUserImageUI (reviewDataItem.getUserID (), holder.reviewItemList_CIMG_imageViewCircular);
         ImageUtils.setImageUI (holder.reviewItemList_IMG_movieImage, reviewDataItem.getMovieImageUrl ());
 
         setGenresUI (holder.genresArr, reviewDataItem.getGenresList ());
@@ -63,7 +71,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     private void setUsernameUI(String userID, MaterialTextView reviewItemList_txt_reviewerName) {
-        DatabaseManager.getInstance ().getUsernameFromId (userID,new Callback_setUsername () {
+        DatabaseManager.getInstance ().getUsernameFromId (userID, new Callback_setUsername () {
             @Override
             public void setUsername(String username) {
                 if (username != null)
@@ -74,20 +82,20 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         });
     }
 
-    private void setUserImageUI(String userID,ImageView reviewItemList_CIMG_imageViewCircular) {
+    private void setUserImageUI(String userID, ImageView reviewItemList_CIMG_imageViewCircular) {
         StorageReference userStorageReference = DatabaseManager.getInstance ().getStorageReference ().child (Constants.STORAGE_PATH + userID);
-        userStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri> () {
+        userStorageReference.getDownloadUrl ().addOnSuccessListener (new OnSuccessListener<Uri> () {
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
-                ImageUtils.setImageUI (context,userStorageReference,reviewItemList_CIMG_imageViewCircular);
+                ImageUtils.setImageUI (context, userStorageReference, reviewItemList_CIMG_imageViewCircular);
 
             }
-        }).addOnFailureListener(new OnFailureListener () {
+        }).addOnFailureListener (new OnFailureListener () {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // File not found
-                setNoImageUI(reviewItemList_CIMG_imageViewCircular);
+                setNoImageUI (reviewItemList_CIMG_imageViewCircular);
             }
         });
     }
@@ -112,6 +120,42 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         return myReviewData.size ();
     }
 
+    public List<ReviewData> getReviews() {
+        return myReviewData;
+    }
+
+    public void add(ReviewData review) {
+        myReviewData.add (review);
+        notifyItemInserted (myReviewData.size () - 1);
+    }
+
+    public void addAll(List<ReviewData> reviewResults) {
+        int previousContentSize = myReviewData.size ();
+        for (ReviewData review : reviewResults) {
+            add (review);
+        }
+        notifyItemRangeInserted (previousContentSize, myReviewData.size ());
+    }
+
+    public void updateAll(List<ReviewData> reviews) {
+        myReviewData.retainAll (reviews);
+        reviews.removeAll (myReviewData);
+        for (ReviewData review : reviews) {
+            add (review);
+        }
+        notifyItemRangeChanged (0, myReviewData.size ());
+    }
+
+    public void clearAll() {
+        int previousContentSize = myReviewData.size ();
+        myReviewData.clear ();
+        notifyItemRangeRemoved (0, previousContentSize);
+    }
+
+    public ReviewData getItem(int position) {
+        return myReviewData.get (position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView reviewItemList_IMG_movieImage;
         ImageView reviewItemList_CIMG_imageViewCircular;
@@ -122,7 +166,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         MaterialTextView reviewItemList_TXT_reviewText;
         RatingBar reviewItemList_RB_ratingBar;
         MaterialTextView[] genresArr;
-
 
         public ViewHolder(@NonNull View itemView) {
             super (itemView);

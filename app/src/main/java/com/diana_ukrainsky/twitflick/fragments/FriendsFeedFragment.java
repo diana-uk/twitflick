@@ -24,6 +24,8 @@ import com.diana_ukrainsky.twitflick.models.GeneralUser;
 import com.diana_ukrainsky.twitflick.models.ReviewData;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,7 +35,8 @@ import java.util.List;
  */
 public class FriendsFeedFragment extends Fragment {
     private MaterialTextView friendsFeedFragment_TXT_noReviews;
-    //Friends Feed Activity
+
+    private LinearLayoutManager linearLayoutManager;
     private RecyclerView recyclerView;
     private ReviewAdapter reviewsAdapter;
 
@@ -41,7 +44,6 @@ public class FriendsFeedFragment extends Fragment {
     private View view;
 
     private ReviewsDao reviewsDao;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,8 +80,7 @@ public class FriendsFeedFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
 
-        initData();
-        setReviewsUI();
+        initData ();
 
         if (getArguments () != null) {
             mParam1 = getArguments ().getString (ARG_PARAM1);
@@ -87,15 +88,39 @@ public class FriendsFeedFragment extends Fragment {
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+        binding = DataBindingUtil.inflate (inflater, R.layout.fragment_friends_feed, container, false);
+        view = binding.getRoot ();
+
+        findViews ();
+        setViews();
+        setAdapter ();
+        setRecyclerView ();
+        setReviewsUI ();
+
+        return view;
+    }
+
+
+
     private void initData() {
         reviewsDao = new ReviewsDao ();
     }
 
+    private void setAdapter() {
+        reviewsAdapter = new ReviewAdapter (getContext ());
+        recyclerView.setAdapter (reviewsAdapter);
+    }
+
     private void setReviewsUI() {
-        DatabaseManager.getInstance ().getUsernameFromId (DatabaseManager.getInstance ().getFirebaseUser ().getUid (),new Callback_setUsername () {
+        DatabaseManager.getInstance ().getUsernameFromId (DatabaseManager.getInstance ().getFirebaseUser ().getUid (), new Callback_setUsername () {
             @Override
             public void setUsername(String username) {
-                if(username!=null) {
+                if (username != null) {
                     CurrentUser.getInstance ().setUsername (username);
                     getMyFriendsList ();
                 }
@@ -107,41 +132,40 @@ public class FriendsFeedFragment extends Fragment {
         DatabaseManager.getInstance ().getFriendsList (new Callback_setMyFriends () {
             @Override
             public void setMyFriendsList(List<GeneralUser> myFriendsList) {
-                if(myFriendsList != null)
-                    setMyFriendsReviewsUI(myFriendsList);
+                if (myFriendsList != null) {
+                    friendsFeedFragment_TXT_noReviews.setVisibility (View.INVISIBLE);
+                    for (GeneralUser friend : myFriendsList) {
+                        getFriendReviews (friend);
+                    }
+
+                } else
+                    friendsFeedFragment_TXT_noReviews.setVisibility (View.VISIBLE);
             }
         });
     }
 
-    private void setMyFriendsReviewsUI(List<GeneralUser> myFriendsList) {
-        DatabaseManager.getInstance ().getReviewsList (myFriendsList,new Callback_setReviews () {
+    private void getFriendReviews(GeneralUser friend) {
+        DatabaseManager.getInstance ().getReviewsList (friend, new Callback_setReviews () {
             @Override
             public void setReviewList(List<ReviewData> reviewList) {
-                if(reviewList.isEmpty ())
-                    friendsFeedFragment_TXT_noReviews.setVisibility (View.VISIBLE);
-                else
-                {
-                    friendsFeedFragment_TXT_noReviews.setVisibility (View.INVISIBLE);
+                if (reviewList != null) {
+                    reviewsAdapter.addAll (reviewList);
+//                    reviewsAdapter.getReviews ().sort((o1, o2) -> o1.getDate ().compareTo(o2.getDate()));
+//                    Collections.reverse (reviewsAdapter.getReviews ());
+                    Comparator<ReviewData> reverseComparator = (c1, c2) -> {
+                        return c2.getDate ().compareTo(c1.getDate ());
+                    };
+                    Collections.sort(reviewsAdapter.getReviews (), reverseComparator);
+                    recyclerView.setAdapter (reviewsAdapter);
                 }
-                reviewsAdapter = new ReviewAdapter (reviewList,getContext ());
-                recyclerView.setAdapter (reviewsAdapter);
             }
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_friends_feed, container, false);
-        view = binding.getRoot();
-
-        findViews();
-        setRecyclerView();
-        setReviewsUI();
-
-        return view;
+    private void setViews() {
+        linearLayoutManager = new LinearLayoutManager (getContext (), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setHasFixedSize (true);
+        recyclerView.setLayoutManager (linearLayoutManager);
     }
 
     private void setRecyclerView() {

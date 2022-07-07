@@ -325,10 +325,7 @@ public class DatabaseManager {
         myFriendsReference.addValueEventListener (friendsListValueEventListener);
     }
 
-
-
-    public void getReviewsList(List<GeneralUser> myFriendsList, Callback_setReviews callback_setReviews) {
-        for (GeneralUser friend : myFriendsList) {
+    public void getReviewsList(GeneralUser friend, Callback_setReviews callback_setReviews) {
             reviewsListValueEventListener = new ValueEventListener () {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -336,20 +333,15 @@ public class DatabaseManager {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren ()) {
                         reviewsList.add (dataSnapshot.getValue (ReviewData.class));
                     }
-                    reviewsList.sort ((o1, o2) -> o1.getDate ().compareTo (o2.getDate ()));
-
-                    //TODO: sort by date
-                    if (callback_setReviews != null)
+                    if(callback_setReviews != null)
                         callback_setReviews.setReviewList (reviewsList);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Log.w (Constants.LOG_TAG, "Failed to read value.", error.toException ());
                 }
             };
             reviewsReference.child (friend.getUserId ()).addValueEventListener (reviewsListValueEventListener);
-        }
     }
 
     public void getFriendRequestsList(Callback_setFriendRequests callback_setFriendRequests) {

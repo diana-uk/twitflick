@@ -22,7 +22,6 @@ import com.diana_ukrainsky.twitflick.utils.AlertUtils;
 import com.diana_ukrainsky.twitflick.utils.Constants;
 import com.diana_ukrainsky.twitflick.utils.ImageUtils;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -38,18 +37,8 @@ public class UserDetailsActivity extends AppCompatActivity {
         setContentView (R.layout.activity_user_details);
 
         findViews ();
-        setView();
         setListeners ();
     }
-
-    private void setView() {
-        setNoImageUI();
-    }
-
-    private void setNoImageUI() {
-        ImageUtils.setImageUI (this, DatabaseManager.getInstance ().getNoImageStorageReference (), userDetails_CIMG_userCircularImage);
-    }
-
 
     private void findViews() {
         userDetails_TF_username = findViewById (R.id.userDetails_TF_username);
@@ -67,7 +56,6 @@ public class UserDetailsActivity extends AppCompatActivity {
                 //TODO: check if only letters and else
             }
         });
-
         userDetails_BTN_uploadImage.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
@@ -123,12 +111,10 @@ public class UserDetailsActivity extends AppCompatActivity {
                     Intent data = result.getData ();
                     if (data != null && data.getData () != null) {
                         Uri selectedImageUri = data.getData ();
-                        Bitmap selectedImageBitmap = ImageUtils.setImageBitmapFromUriUI (this, selectedImageUri);
+                        Bitmap selectedImageBitmap = ImageUtils.setImageBitmapFromUriUI (getApplicationContext (), selectedImageUri);
                         userDetails_CIMG_userCircularImage.setImageBitmap (selectedImageBitmap);
                         DatabaseManager.getInstance ().uploadFileToCloudStorage (this, selectedImageUri);
                     }
                 }
             });
-
-
 }

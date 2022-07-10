@@ -33,9 +33,9 @@ public class ImageUtils {
      * @param downloadReference From which url from Firebase Storage
      * @param imageView To which ImageView we want to set in.
      */
-    public static void setImageUI(Context context, StorageReference downloadReference, ImageView imageView) {
+    public static void setImageUI(Context context, Uri uri, ImageView imageView) {
         Glide.with(context /* context */)
-                .load(downloadReference)
+                .load(uri)
                 .into(imageView);
     }
 

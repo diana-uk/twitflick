@@ -51,7 +51,7 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circle_view"
+                    android:background="@drawable/circle_view_pink"
                     android:paddingStart="5dp"
                     android:paddingEnd="10dp"
                     android:scaleType="fitCenter"
@@ -60,11 +60,11 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:fontFamily="@font/aloevera"
                     android:text="@string/add_friend"
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="15sp" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/fragmentUserFeed_TXT_username"
@@ -73,13 +73,14 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/aloevera"
                     android:text="***USERNAME***"
+                    android:textSize="15sp"
                     android:textColor="@color/black" />
 
                 <!-- Circular Image View  -->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/fragmentUserFeed_CIMG_userCircularImage"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/circle_bordered_view"
@@ -96,7 +97,7 @@
                     android:fontFamily="@font/aloevera"
                     android:text="Upload Image"
                     android:textColor="@color/black"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     app:elevation="10dp"
                     app:icon="@drawable/ic_file_upload"
                     app:iconTint="@color/black"

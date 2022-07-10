@@ -17,10 +17,12 @@ import com.diana_ukrainsky.twitflick.callbacks.Callback_setFriendRequests;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setUsername;
 import com.diana_ukrainsky.twitflick.databinding.FragmentNotificationsBinding;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
+import com.diana_ukrainsky.twitflick.models.FriendRequestData;
 import com.diana_ukrainsky.twitflick.models.GeneralUser;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -87,7 +89,7 @@ public class NotificationsFragment extends Fragment {
     private void setFriendRequestsUI() {
         DatabaseManager.getInstance ().getFriendRequestsList (new Callback_setFriendRequests () {
             @Override
-            public void setFriendRequestsList(List<GeneralUser> friendRequestsList) {
+            public void setFriendRequestsList(List<FriendRequestData> friendRequestsList) {
                 if(friendRequestsList.isEmpty ())
                     notificationsFragment_TXT_noFriendRequests.setVisibility (View.VISIBLE);
                 else

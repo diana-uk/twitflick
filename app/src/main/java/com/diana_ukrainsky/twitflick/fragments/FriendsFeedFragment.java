@@ -132,12 +132,11 @@ public class FriendsFeedFragment extends Fragment {
         DatabaseManager.getInstance ().getFriendsList (new Callback_setMyFriends () {
             @Override
             public void setMyFriendsList(List<GeneralUser> myFriendsList) {
-                if (myFriendsList != null) {
+                if (myFriendsList != null && !(myFriendsList.isEmpty ())) {
                     friendsFeedFragment_TXT_noReviews.setVisibility (View.INVISIBLE);
                     for (GeneralUser friend : myFriendsList) {
                         getFriendReviews (friend);
                     }
-
                 } else
                     friendsFeedFragment_TXT_noReviews.setVisibility (View.VISIBLE);
             }

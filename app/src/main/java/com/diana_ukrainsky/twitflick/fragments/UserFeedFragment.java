@@ -33,7 +33,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -103,20 +102,19 @@ public class UserFeedFragment extends Fragment {
         view = binding.getRoot ();
 
         findViews ();
-        setListeners ();
         setViewUI ();
+        setListeners ();
 
         return view;
     }
 
     private void setViewUI() {
-        setNoImageUI ();
         setUserImageUI ();
         setUsernameUI ();
     }
 
     private void setNoImageUI() {
-        ImageUtils.setImageUI (getContext (), DatabaseManager.getInstance ().getNoImageStorageReference (), fragmentUserFeed_CIMG_userCircularImage);
+        fragmentUserFeed_CIMG_userCircularImage.setImageResource (R.drawable.ic_no_picture);
     }
 
     private void setUsernameUI() {
@@ -134,6 +132,7 @@ public class UserFeedFragment extends Fragment {
     private void setUserImageUI() {
         String userUID = DatabaseManager.getInstance ().getFirebaseUser ().getUid ();
         StorageReference userStorageReference = DatabaseManager.getInstance ().getStorageReference ().child (Constants.STORAGE_PATH + userUID);
+
         userStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri> () {
             @Override
             public void onSuccess(Uri uri) {
@@ -141,8 +140,7 @@ public class UserFeedFragment extends Fragment {
                 if (getActivity() == null) {
                     return;
                 }
-                ImageUtils.setImageUI (getActivity (),userStorageReference,fragmentUserFeed_CIMG_userCircularImage);
-
+                ImageUtils.setImageUI (getContext (),uri,fragmentUserFeed_CIMG_userCircularImage);
             }
         }).addOnFailureListener(new OnFailureListener () {
             @Override

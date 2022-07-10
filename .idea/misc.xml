@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_bordered_view.xml" value="0.1935" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_user_picture_view.xml" value="0.1925" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_view.xml" value="0.1935" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/ic_accept.xml" value="0.1935" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/ic_no_picture.xml" value="0.3635" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/round_corners_view.xml" value="0.1935" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/rounded_corners_border_view.xml" value="0.1935" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/activity_add_review.xml" value="0.1" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/activity_user_details.xml" value="0.3625" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/fragment_user_feed.xml" value="0.3625" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/friend_request_item_list.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/review_item_list.xml" value="0.75" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/user_item_list.xml" value="1.0" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

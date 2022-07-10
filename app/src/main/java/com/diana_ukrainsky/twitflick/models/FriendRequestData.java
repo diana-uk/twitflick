@@ -1,29 +1,39 @@
 package com.diana_ukrainsky.twitflick.models;
 
-public class FriendRequestData {
-    User userRequested;
+import java.util.Date;
 
-    public FriendRequestData(GeneralUser userRequested) {
-        this.userRequested = userRequested;
-    }
+public class FriendRequestData {
+    private String userId;
+    private String username;
+    private Date dateSent;
 
     public FriendRequestData() {
-        userRequested = new GeneralUser ();
-    }
-
-    public String getUserName() {
-        return userRequested.getName ();
     }
 
     public String getUserId() {
-        return userRequested.getUserId ();
+        return userId;
     }
 
-    public String getUserImage() {
-        return userRequested.getUserImage ();
+    public FriendRequestData setUserId(String userId) {
+        this.userId = userId;
+        return this;
     }
 
-    public void setUserRequested(User userRequested) {
-        this.userRequested = userRequested;
+    public Date getDateSent() {
+        return dateSent;
+    }
+
+    public FriendRequestData setDateSent(Date dateSent) {
+        this.dateSent = dateSent;
+        return this;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public FriendRequestData setUsername(String username) {
+        this.username = username;
+        return this;
     }
 }

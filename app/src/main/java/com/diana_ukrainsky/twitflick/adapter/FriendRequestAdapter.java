@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.diana_ukrainsky.twitflick.R;
+import com.diana_ukrainsky.twitflick.logic.DataManager;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
+import com.diana_ukrainsky.twitflick.models.FriendRequestData;
 import com.diana_ukrainsky.twitflick.models.GeneralUser;
 import com.diana_ukrainsky.twitflick.utils.AlertUtils;
 import com.diana_ukrainsky.twitflick.utils.Constants;
@@ -25,10 +27,10 @@ import com.google.firebase.storage.StorageReference;
 import java.util.List;
 
 public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdapter.ViewHolder>  {
-    List<GeneralUser> friendRequestData;
+    List<FriendRequestData> friendRequestData;
     Context context;
 
-    public FriendRequestAdapter(List<GeneralUser> friendRequestData, Context context) {
+    public FriendRequestAdapter(List<FriendRequestData> friendRequestData, Context context) {
         this.friendRequestData = friendRequestData;
         this.context=context;
     }
@@ -44,18 +46,17 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final GeneralUser friendRequestItem  = friendRequestData.get (position);
+        final FriendRequestData friendRequestItem  = friendRequestData.get (position);
         setUserImageUI (friendRequestItem.getUserId (),holder.friendRequestItem_CIMG_userCircularImage);
-        ImageUtils.setImageUI (holder.friendRequestItem_CIMG_userCircularImage, friendRequestItem.getUserImage ());
         holder.friendRequestItem_TXT_userName.setText (friendRequestItem.getUsername ());
         // What happens when Friend Request accepted
         holder.friendRequestItem_IMGBTN_accept.setOnClickListener (v -> {
-            DatabaseManager.getInstance ().acceptFriendRequestDB (friendRequestItem);
+            DataManager.getInstance ().acceptFriendRequest(friendRequestItem);
             AlertUtils.showToast (context, "Friend Request Accepted !");
         });
         // What happens when Friend Request declined
         holder.friendRequestItem_IMGBTN_decline.setOnClickListener (v -> {
-            DatabaseManager.getInstance ().declineFriendRequestDB (friendRequestItem);
+            DataManager.getInstance ().declineFriendRequest(friendRequestItem);
             AlertUtils.showToast (context, "Friend Request Declined !");
         });
     }
@@ -66,7 +67,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
-                ImageUtils.setImageUI (context,userStorageReference,friendRequestItem_CIMG_userCircularImage);
+                ImageUtils.setImageUI (context,uri,friendRequestItem_CIMG_userCircularImage);
 
             }
         }).addOnFailureListener(new OnFailureListener () {
@@ -79,7 +80,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
     }
 
     private void setNoImageUI(ImageView friendRequestItem_CIMG_userCircularImage) {
-        ImageUtils.setImageUI (context, DatabaseManager.getInstance ().getNoImageStorageReference (), friendRequestItem_CIMG_userCircularImage);
+        friendRequestItem_CIMG_userCircularImage.setImageResource (R.drawable.ic_no_picture);
     }
 
     @Override

@@ -29,19 +29,19 @@ public class BottomNavigationActivity extends AppCompatActivity {
     private FloatingActionButton bottomNavigation_FB_addReview;
     private ActivityBottomNavigationBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         instance = this;
         setContentView (R.layout.activity_bottom_navigation);
 
-        findViews();
-        setListeners();
-
+        findViews ();
+        setListeners ();
         initView ();
     }
 
-    public static BottomNavigationActivity getInstance(){
+    public static BottomNavigationActivity getInstance() {
         return instance;
     }
 
@@ -50,7 +50,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         bottomNavigation_FB_addReview.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (BottomNavigationActivity.this,SearchMovieActivity.class);
+                Intent intent = new Intent (BottomNavigationActivity.this, SearchMovieActivity.class);
                 startActivity (intent);
             }
         });
@@ -58,29 +58,29 @@ public class BottomNavigationActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_bottom_navigation);
+        binding = DataBindingUtil.setContentView (this, R.layout.activity_bottom_navigation);
         bottomNavigationView = findViewById (R.id.bottomNavigationView);
         bottomNavigation_FB_addReview = findViewById (R.id.bottomNavigation_FB_addReview);
     }
 
 
     private void initView() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_Bottom, new FriendsFeedFragment ()).commit();
-        binding.bottomNavigationView.setSelectedItemId(R.id.bottomMenu_ITEM_friends);
+        getSupportFragmentManager ().beginTransaction ().replace (R.id.frameLayout_Bottom, new FriendsFeedFragment ()).commit ();
+        binding.bottomNavigationView.setSelectedItemId (R.id.bottomMenu_ITEM_friends);
         bottomNavigationView.setBackground (null);
 
         binding.bottomNavigationView.setOnItemSelectedListener (new NavigationBarView.OnItemSelectedListener () {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId ()) {
                     case R.id.bottomMenu_ITEM_friends:
-                        loadFragment(new FriendsFeedFragment ());
+                            loadFragment (new FriendsFeedFragment ());
                         break;
                     case R.id.bottomMenu_ITEM_user:
-                        loadFragment(new UserFeedFragment ());
+                            loadFragment (new UserFeedFragment ());
                         break;
                     case R.id.bottomMenu_ITEM_notifications:
-                        loadFragment(new NotificationsFragment ());
+                        loadFragment (new NotificationsFragment ());
                         break;
 //                    case R.id.bottomMenu_ITEM_filter:
 //                        loadFragment(new FilterFragment ());
@@ -91,10 +91,10 @@ public class BottomNavigationActivity extends AppCompatActivity {
         });
     }
 
-    public void loadFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frameLayout_Bottom, fragment);
-        transaction.commit();
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager ();
+        FragmentTransaction transaction = fragmentManager.beginTransaction ();
+        transaction.replace (R.id.frameLayout_Bottom, fragment);
+        transaction.commit ();
     }
 }

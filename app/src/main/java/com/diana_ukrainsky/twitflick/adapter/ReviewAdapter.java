@@ -88,7 +88,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
-                ImageUtils.setImageUI (context, userStorageReference, reviewItemList_CIMG_imageViewCircular);
+                ImageUtils.setImageUI (context, uri, reviewItemList_CIMG_imageViewCircular);
 
             }
         }).addOnFailureListener (new OnFailureListener () {
@@ -101,7 +101,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     private void setNoImageUI(ImageView reviewItemList_CIMG_imageViewCircular) {
-        ImageUtils.setImageUI (context, DatabaseManager.getInstance ().getNoImageStorageReference (), reviewItemList_CIMG_imageViewCircular);
+        reviewItemList_CIMG_imageViewCircular.setImageResource (R.drawable.ic_no_picture);
     }
 
 

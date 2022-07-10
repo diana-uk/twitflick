@@ -4,7 +4,6 @@ import com.diana_ukrainsky.twitflick.models.GeneralUser;
 
 import java.util.List;
 
-public interface Callback_setMyFriends {
-    void setMyFriendsList(List<GeneralUser> myFriendsList);
-
+public interface Callback_getUser {
+    void getUser(GeneralUser generalUser);
 }

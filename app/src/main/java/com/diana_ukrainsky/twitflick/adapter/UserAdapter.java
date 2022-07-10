@@ -53,7 +53,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (!DataManager.getInstance ().checkIfRequestSent (generalUserItem)) {
-                    DatabaseManager.getInstance ().sendFriendRequest (generalUserItem);
+                    DataManager.getInstance ().sendFriendRequest (generalUserItem);
                     Toast.makeText (context, "Friend request sent", Toast.LENGTH_SHORT).show ();
                 } else
                     Toast.makeText (context, "Friend request was already sent", Toast.LENGTH_SHORT).show ();
@@ -67,7 +67,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
-                ImageUtils.setImageUI (context,userStorageReference,userItem_cimg_userCircularImage);
+                ImageUtils.setImageUI (context,uri,userItem_cimg_userCircularImage);
 
             }
         }).addOnFailureListener(new OnFailureListener () {
@@ -81,7 +81,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
 
     private void setNoImageUI(ImageView userItem_CIMG_userCircularImage) {
-        ImageUtils.setImageUI (context, DatabaseManager.getInstance ().getNoImageStorageReference (), userItem_CIMG_userCircularImage);
+        userItem_CIMG_userCircularImage.setImageResource (R.drawable.ic_no_picture);
     }
 
 

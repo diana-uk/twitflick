@@ -2,12 +2,12 @@ package com.diana_ukrainsky.twitflick.logic;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.diana_ukrainsky.twitflick.callbacks.Callback_getUser;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_handleSignOut;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_handleSignedInUser;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_searchUserByUsername;
@@ -16,12 +16,9 @@ import com.diana_ukrainsky.twitflick.callbacks.Callback_setMyFriends;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setReviews;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setUsername;
 import com.diana_ukrainsky.twitflick.models.CurrentUser;
+import com.diana_ukrainsky.twitflick.models.FriendRequestData;
 import com.diana_ukrainsky.twitflick.models.GeneralUser;
-import com.diana_ukrainsky.twitflick.models.Genre;
-import com.diana_ukrainsky.twitflick.models.MovieData;
 import com.diana_ukrainsky.twitflick.models.ReviewData;
-import com.diana_ukrainsky.twitflick.ui.BottomNavigationActivity;
-import com.diana_ukrainsky.twitflick.ui.SignInOptionsActivity;
 import com.diana_ukrainsky.twitflick.utils.AlertUtils;
 import com.diana_ukrainsky.twitflick.utils.Constants;
 import com.firebase.ui.auth.AuthUI;
@@ -42,10 +39,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class DatabaseManager {
@@ -69,6 +64,7 @@ public class DatabaseManager {
     private ValueEventListener reviewsListValueEventListener;
     private ValueEventListener friendRequestsListValueEventListener;
     private ValueEventListener friendsListValueEventListener;
+    private ValueEventListener userValueEventListener;
 
 
     private DatabaseManager() {
@@ -138,7 +134,7 @@ public class DatabaseManager {
     }
 
     public boolean isUserSignedIn() {
-        if (firebaseUser != null && firebaseUser.getUid ()!=null) return true;
+        if (firebaseUser != null && firebaseUser.getUid () != null) return true;
         return false;
     }
 
@@ -187,7 +183,7 @@ public class DatabaseManager {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String uId = snapshot.getValue (String.class);
                 //TODO: check if user has username too
-                if (uId != null && callback_handleSignedInUser!=null)
+                if (uId != null && callback_handleSignedInUser != null)
                     callback_handleSignedInUser.isUserExist (true);
                 else {
                     assert callback_handleSignedInUser != null;
@@ -201,58 +197,53 @@ public class DatabaseManager {
         });
     }
 
-    public void acceptFriendRequestDB(GeneralUser friendRequestItem) {
-        addToFriendsListDB (friendRequestItem);
-        removeFromListsDB (friendRequestItem);
+    public void acceptFriendRequestDB(GeneralUser generalUser) {
+        addToFriendsListDB (generalUser);
+        removeFromListsDB (generalUser);
     }
 
-    private void removeFromListsDB(GeneralUser friendRequestItem) {
-        removeFromMyPendingRequestsDB (friendRequestItem);
-        removeFromFriendsRequestsSentDB (friendRequestItem);
+    public void removeFromListsDB(GeneralUser generalUser) {
+        removeFromMyPendingRequestsDB (generalUser);
+        removeFromFriendsRequestsSentDB (generalUser);
     }
 
-    private void addToFriendsListDB(GeneralUser friendRequestItem) {
-        addToMyFriendsDB (friendRequestItem);
-        addToUserFriendsDB (friendRequestItem);
-    }
-    private void addFriendRequestToFirebase(GeneralUser generalUserList) {
-        addToPendingFriendRequestsDB (generalUserList);
-        addToFriendRequestsSentDB (generalUserList);
-
+    public void addToFriendsListDB(GeneralUser generalUser) {
+        addToMyFriendsDB (generalUser);
+        addToUserFriendsDB (generalUser);
     }
 
-    public void sendFriendRequest(GeneralUser generalUserList) {
-        currentUser.sendFriendRequest (generalUserList);
-        addFriendRequestToFirebase (generalUserList);
+    public void addFriendRequestToFirebase(FriendRequestData friendRequestSent, FriendRequestData pendingFriendRequest) {
+        addToPendingFriendRequestsDB (friendRequestSent, pendingFriendRequest);
+        addToFriendRequestsSentDB (friendRequestSent);
     }
 
 
-    private void addToFriendRequestsSentDB(GeneralUser generalUserItem) {
+    private void addToFriendRequestsSentDB(FriendRequestData friendRequestData) {
         databaseReference.child ("Users")
                 .child (currentUser.getUsername ())
-                .child("User")
+                .child ("User")
                 .child (currentUser.getUserId ()).
                 child ("FriendRequestsSent")
-                .child(generalUserItem.getUserId ())
-                .setValue (generalUserItem);
+                .setValue (DataManager.getInstance ().getFriendRequestSentByKey (friendRequestData.getUserId ()));
     }
 
 
-    private void addToPendingFriendRequestsDB(GeneralUser generalUserItem) {
+    private void addToPendingFriendRequestsDB(FriendRequestData friendRequestSent, FriendRequestData pendingFriendRequest) {
+        HashMap<String, FriendRequestData> pendingFriendRequestMap = new HashMap<> ();
+        pendingFriendRequestMap.put (currentUser.getUserId (), pendingFriendRequest);
         databaseReference.child ("Users")
-                .child (generalUserItem.getUsername ())
+                .child (friendRequestSent.getUsername ())
                 .child ("User")
-                .child (generalUserItem.getUserId ())
+                .child (friendRequestSent.getUserId ())
                 .child ("PendingFriendRequests")
-                .child (currentUser.getUserId ())
-                .setValue (currentUser);
+                .setValue (pendingFriendRequestMap);
     }
 
-    private void removeFromFriendsRequestsSentDB(GeneralUser friendRequestItem) {
+    private void removeFromFriendsRequestsSentDB(GeneralUser generalUser) {
         databaseReference.child ("Users")
-                .child (friendRequestItem.getUsername ())
+                .child (generalUser.getUsername ())
                 .child ("User")
-                .child (friendRequestItem.getUserId ()).
+                .child (generalUser.getUserId ()).
                 child ("FriendRequestsSent")
                 .child (currentUser.getUserId ())
                 .removeValue ();
@@ -260,38 +251,41 @@ public class DatabaseManager {
         Log.d ("pttt", "removed From Friends Requests Sent DB ");
     }
 
-    private void removeFromMyPendingRequestsDB(GeneralUser friendRequestItem) {
+    private void removeFromMyPendingRequestsDB(GeneralUser generalUser) {
         databaseReference.child ("Users")
                 .child (currentUser.getUsername ())
                 .child ("User")
                 .child (currentUser.getUserId ())
                 .child ("PendingFriendRequests")
-                .child (friendRequestItem.getUserId ())
+                .child (generalUser.getUserId ())
                 .removeValue ();
 
         Log.d (Constants.LOG_TAG, "removed From MyPending Requests DB ");
     }
 
-    private void addToUserFriendsDB(GeneralUser friendRequestItem) {
-        usersReference.child (friendRequestItem.getUsername ())
+    private void addToUserFriendsDB(GeneralUser generalUser) {
+        HashMap<String, Boolean> friend = new HashMap<> ();
+        friend.put (currentUser.getUserId (), true);
+        usersReference.child (generalUser.getUsername ())
                 .child ("User")
-                .child (friendRequestItem.getUserId ()).
+                .child (generalUser.getUserId ()).
                 child ("Friends")
-                .child (currentUser.getUserId ()).setValue (currentUser);
+                .setValue (friend);
     }
 
-    private void addToMyFriendsDB(GeneralUser friendRequestItem) {
+    private void addToMyFriendsDB(GeneralUser generalUser) {
+        HashMap<String, Boolean> friend = new HashMap<> ();
+        friend.put (generalUser.getUserId (), true);
         databaseReference.child ("Users")
                 .child (currentUser.getUsername ())
                 .child ("User")
                 .child (currentUser.getUserId ()).
                 child ("Friends")
-                .child (friendRequestItem.getUserId ())
-                .setValue (friendRequestItem);
+                .setValue (friend);
     }
 
-    public void declineFriendRequestDB(GeneralUser friendRequestItem) {
-        removeFromListsDB (friendRequestItem);
+    public void declineFriendRequestDB(GeneralUser generalUser) {
+        removeFromListsDB (generalUser);
     }
 
 
@@ -304,19 +298,36 @@ public class DatabaseManager {
 
     //****************************** Read ****************************************************************
     public void getFriendsList(Callback_setMyFriends callback_setMyFriends) {
+        List<GeneralUser> friends = new ArrayList<> ();
+
         friendsListValueEventListener = new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<GeneralUser> myFriendsList = new ArrayList<> ();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren ()) {
-                    myFriendsList.add (dataSnapshot.getValue (GeneralUser.class));
-                }
-                //TODO: sort by date
-                if (callback_setMyFriends != null) {
-                    callback_setMyFriends.setMyFriendsList (myFriendsList);
+                    String userId = dataSnapshot.getKey ();
+                    Boolean isActive = dataSnapshot.getValue (Boolean.class);
+                    Log.d (Constants.LOG_TAG, "key: " + userId);
+
+                    getUsernameFromId (userId, new Callback_setUsername () {
+                        @Override
+                        public void setUsername(String username) {
+                            if (username != null) {
+                                getUser (userId, username, new Callback_getUser () {
+                                    @Override
+                                    public void getUser(GeneralUser generalUser) {
+                                        if (generalUser != null) {
+                                            Log.d ("pttt", "getUser: ");
+                                            friends.add (generalUser);
+                                            if (callback_setMyFriends != null && friends.size () == snapshot.getChildrenCount ())
+                                                callback_setMyFriends.setMyFriendsList (friends);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w (Constants.LOG_TAG, "Failed to read value.", error.toException ());
@@ -325,27 +336,45 @@ public class DatabaseManager {
         myFriendsReference.addValueEventListener (friendsListValueEventListener);
     }
 
+    public void getUser(String userId, String username, Callback_getUser callback_getUser) {
+        userValueEventListener = new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                GeneralUser generalUser = snapshot.getValue (GeneralUser.class);
+                if (callback_getUser != null && generalUser != null)
+                    callback_getUser.getUser (generalUser);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w (Constants.LOG_TAG, "Failed to read value.", error.toException ());
+            }
+        };
+        usersReference.child (username).child ("User").child (userId).addValueEventListener (userValueEventListener);
+    }
+
     public void getReviewsList(GeneralUser friend, Callback_setReviews callback_setReviews) {
-            reviewsListValueEventListener = new ValueEventListener () {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    List<ReviewData> reviewsList = new ArrayList<> ();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren ()) {
-                        reviewsList.add (dataSnapshot.getValue (ReviewData.class));
-                    }
-                    if(callback_setReviews != null)
-                        callback_setReviews.setReviewList (reviewsList);
+        reviewsListValueEventListener = new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<ReviewData> reviewsList = new ArrayList<> ();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren ()) {
+                    reviewsList.add (dataSnapshot.getValue (ReviewData.class));
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w (Constants.LOG_TAG, "Failed to read value.", error.toException ());
-                }
-            };
-            reviewsReference.child (friend.getUserId ()).addValueEventListener (reviewsListValueEventListener);
+                if (callback_setReviews != null)
+                    callback_setReviews.setReviewList (reviewsList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w (Constants.LOG_TAG, "Failed to read value.", error.toException ());
+            }
+        };
+        reviewsReference.child (friend.getUserId ()).addValueEventListener (reviewsListValueEventListener);
     }
 
     public void getFriendRequestsList(Callback_setFriendRequests callback_setFriendRequests) {
-        getUsernameFromId (firebaseUser.getUid (),new Callback_setUsername () {
+        getUsernameFromId (firebaseUser.getUid (), new Callback_setUsername () {
             @Override
             public void setUsername(String username) {
                 setCurrentUserReferences ();
@@ -358,12 +387,12 @@ public class DatabaseManager {
         friendRequestsListValueEventListener = new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<GeneralUser> friendRequestsList = new ArrayList<> ();
+                List<FriendRequestData> friendRequestList = new ArrayList<> ();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren ()) {
-                    friendRequestsList.add (dataSnapshot.getValue (GeneralUser.class));
+                    friendRequestList.add (dataSnapshot.getValue (FriendRequestData.class));
                 }
                 if (callback_setFriendRequests != null)
-                    callback_setFriendRequests.setFriendRequestsList (friendRequestsList);
+                    callback_setFriendRequests.setFriendRequestsList (friendRequestList);
             }
 
             @Override
@@ -374,13 +403,13 @@ public class DatabaseManager {
         friendRequestsReference.addValueEventListener (friendRequestsListValueEventListener);
     }
 
-
-    public void getUsernameFromId(String userID,Callback_setUsername callback_setUsername) {
+    public void getUsernameFromId(String userID, Callback_setUsername callback_setUsername) {
         usernamesReference.child (userID).addValueEventListener (new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String username = snapshot.getValue (String.class);
                 if (username != null && callback_setUsername != null) {
+                    //TODO: remove next line
                     setCurrentUserReferences ();
                     callback_setUsername.setUsername (username);
                 }
@@ -414,6 +443,34 @@ public class DatabaseManager {
         });
     }
 
+    public void handleDeletedAuthUser(Context context, Callback_handleSignOut callback_handleSignOut) {
+        usernamesReference.child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ()).addListenerForSingleValueEvent (new ValueEventListener () {
+            @Override
+            public void onDataChange(@com.google.firebase.database.annotations.NotNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists ()) {
+                    AuthUI.getInstance ()
+                            .signOut (context)
+                            .addOnCompleteListener (new OnCompleteListener<Void> () {
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    // user is now signed out
+                                    DatabaseManager.getInstance ().userSignedOut ();
+                                    callback_handleSignOut.isSignOut (true);
+                                }
+                            });
+                    // user has sign out
+                } else {
+                    callback_handleSignOut.isSignOut (false);
+                    // user still logged in
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    //****************************** Firebase Storage ****************************************************************
     public void uploadFileToCloudStorage(Context context, Uri selectedImageUri) {
         if (selectedImageUri != null) {
             // Code for showing progressDialog while uploading
@@ -456,35 +513,6 @@ public class DatabaseManager {
                     });
         }
     }
-
-
-    public void handleDeletedAuthUser(Context context,Callback_handleSignOut callback_handleSignOut) {
-        usernamesReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid ()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@com.google.firebase.database.annotations.NotNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
-                    AuthUI.getInstance ()
-                            .signOut (context)
-                            .addOnCompleteListener (new OnCompleteListener<Void> () {
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    // user is now signed out
-                                    DatabaseManager.getInstance ().userSignedOut ();
-                                    callback_handleSignOut.isSignOut (true);
-                                }
-                            });
-                    // user has sign out
-                } else {
-                    callback_handleSignOut.isSignOut (false);
-                    // user still logged in
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
-
 
     public StorageReference getNoImageStorageReference() {
         return getStorageReference ().child (Constants.STORAGE_PATH + Constants.NO_IMAGE_FILE);

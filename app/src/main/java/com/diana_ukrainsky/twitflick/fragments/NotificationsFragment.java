@@ -12,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.diana_ukrainsky.twitflick.R;
-import com.diana_ukrainsky.twitflick.adapter.FriendRequestAdapter;
+import com.diana_ukrainsky.twitflick.adapters.FriendRequestAdapter;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setFriendRequests;
-import com.diana_ukrainsky.twitflick.callbacks.Callback_setUsername;
 import com.diana_ukrainsky.twitflick.databinding.FragmentNotificationsBinding;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
 import com.diana_ukrainsky.twitflick.models.FriendRequestData;
@@ -22,7 +21,6 @@ import com.diana_ukrainsky.twitflick.models.GeneralUser;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -104,7 +102,6 @@ public class NotificationsFragment extends Fragment {
     private void initData() {
         friendRequestsData = new ArrayList<> ();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

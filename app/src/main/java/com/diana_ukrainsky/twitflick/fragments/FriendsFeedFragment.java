@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.diana_ukrainsky.twitflick.R;
-import com.diana_ukrainsky.twitflick.adapter.ReviewAdapter;
+import com.diana_ukrainsky.twitflick.adapters.ReviewAdapter;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setMyFriends;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setReviews;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setUsername;
@@ -122,13 +122,13 @@ public class FriendsFeedFragment extends Fragment {
             public void setUsername(String username) {
                 if (username != null) {
                     CurrentUser.getInstance ().setUsername (username);
-                    getMyFriendsList ();
+                    getMyFriendsReviews ();
                 }
             }
         });
     }
 
-    private void getMyFriendsList() {
+    private void getMyFriendsReviews() {
         DatabaseManager.getInstance ().getFriendsList (new Callback_setMyFriends () {
             @Override
             public void setMyFriendsList(List<GeneralUser> myFriendsList) {

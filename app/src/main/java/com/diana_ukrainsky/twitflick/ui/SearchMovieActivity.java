@@ -6,26 +6,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.diana_ukrainsky.twitflick.R;
-import com.diana_ukrainsky.twitflick.adapter.MovieAdapter;
+import com.diana_ukrainsky.twitflick.adapters.MovieAdapter;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_retrofitResponse;
 import com.diana_ukrainsky.twitflick.logic.RetrofitManager;
 import com.diana_ukrainsky.twitflick.models.MovieList;
 import com.diana_ukrainsky.twitflick.models.MovieData;
-import com.diana_ukrainsky.twitflick.retrofit.RetrofitService;
-import com.diana_ukrainsky.twitflick.service.JsonApiMovies;
 import com.diana_ukrainsky.twitflick.utils.AlertUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SearchMovieActivity extends AppCompatActivity {
     public static SearchMovieActivity instance = null;

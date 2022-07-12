@@ -1,4 +1,4 @@
-package com.diana_ukrainsky.twitflick.adapter;
+package com.diana_ukrainsky.twitflick.adapters;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diana_ukrainsky.twitflick.R;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setUsername;
-import com.diana_ukrainsky.twitflick.fragments.FriendsFeedFragment;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
 import com.diana_ukrainsky.twitflick.models.Genre;
-import com.diana_ukrainsky.twitflick.models.MovieData;
 import com.diana_ukrainsky.twitflick.models.ReviewData;
 import com.diana_ukrainsky.twitflick.utils.AlertUtils;
 import com.diana_ukrainsky.twitflick.utils.Constants;

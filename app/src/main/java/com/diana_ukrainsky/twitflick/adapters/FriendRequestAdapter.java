@@ -1,4 +1,4 @@
-package com.diana_ukrainsky.twitflick.adapter;
+package com.diana_ukrainsky.twitflick.adapters;
 
 import android.content.Context;
 import android.net.Uri;
@@ -15,7 +15,6 @@ import com.diana_ukrainsky.twitflick.R;
 import com.diana_ukrainsky.twitflick.logic.DataManager;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
 import com.diana_ukrainsky.twitflick.models.FriendRequestData;
-import com.diana_ukrainsky.twitflick.models.GeneralUser;
 import com.diana_ukrainsky.twitflick.utils.AlertUtils;
 import com.diana_ukrainsky.twitflick.utils.Constants;
 import com.diana_ukrainsky.twitflick.utils.ImageUtils;
@@ -24,7 +23,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.TimeZone;
 
 public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdapter.ViewHolder>  {
     List<FriendRequestData> friendRequestData;
@@ -49,6 +51,12 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
         final FriendRequestData friendRequestItem  = friendRequestData.get (position);
         setUserImageUI (friendRequestItem.getUserId (),holder.friendRequestItem_CIMG_userCircularImage);
         holder.friendRequestItem_TXT_userName.setText (friendRequestItem.getUsername ());
+
+        //TODO: class for the date formatter
+        DateFormat dateFormat = new SimpleDateFormat ("dd/MM/yyyy HH:mm:ss");
+        dateFormat.setTimeZone (TimeZone.getTimeZone("Asia/Jerusalem"));
+
+        holder.friendRequestItem_TXT_dateSent.setText (dateFormat.format(friendRequestItem.getDateSent ()));
         // What happens when Friend Request accepted
         holder.friendRequestItem_IMGBTN_accept.setOnClickListener (v -> {
             DataManager.getInstance ().acceptFriendRequest(friendRequestItem);
@@ -100,7 +108,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
             super (itemView);
             friendRequestItem_CIMG_userCircularImage = itemView.findViewById (R.id.friendRequestItem_CIMG_userCircularImage);
             friendRequestItem_TXT_userName = itemView.findViewById (R.id.friendRequestItem_TXT_userName);
-//            friendRequestItem_TXT_dateSent = itemView.findViewById (R.id.friendRequestItem_TXT_dateSent);
+            friendRequestItem_TXT_dateSent = itemView.findViewById (R.id.friendRequestItem_TXT_dateSent);
             friendRequestItem_IMGBTN_accept = itemView.findViewById (R.id.friendRequestItem_IMGBTN_accept);
             friendRequestItem_IMGBTN_decline = itemView.findViewById (R.id.friendRequestItem_IMGBTN_decline);
         }

@@ -1,4 +1,4 @@
-package com.diana_ukrainsky.twitflick.adapter;
+package com.diana_ukrainsky.twitflick.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,6 @@ import com.diana_ukrainsky.twitflick.ui.AddReviewActivity;
 import com.diana_ukrainsky.twitflick.utils.Constants;
 import com.diana_ukrainsky.twitflick.utils.ImageUtils;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,5 +20,4 @@ public class CurrentUser extends User{
         return instance;
     }
 
-
 }

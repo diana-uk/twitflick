@@ -9,8 +9,12 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.StorageReference;
@@ -44,6 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class UserFeedFragment extends Fragment {
     private ImageButton fragmentUserFeed_IMGBTN_addFriend;
+    private ImageButton fragmentUserFeed_IMGBTN_friends;
     private ImageButton fragmentUserFeed_IMGBTN_exit;
     private CircleImageView fragmentUserFeed_CIMG_userCircularImage;
     private MaterialButton fragmentUserFeed_BTN_uploadImage;
@@ -51,6 +57,8 @@ public class UserFeedFragment extends Fragment {
 
     private FragmentUserFeedBinding binding;
     private View view;
+
+    private static final String tag = "user_feed_fragment";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,20 +73,9 @@ public class UserFeedFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserFeedFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UserFeedFragment newInstance(String param1, String param2) {
+    public static UserFeedFragment newInstance() {
         UserFeedFragment fragment = new UserFeedFragment ();
         Bundle args = new Bundle ();
-        args.putString (ARG_PARAM1, param1);
-        args.putString (ARG_PARAM2, param2);
         fragment.setArguments (args);
         return fragment;
     }
@@ -86,13 +83,11 @@ public class UserFeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-
         if (getArguments () != null) {
             mParam1 = getArguments ().getString (ARG_PARAM1);
             mParam2 = getArguments ().getString (ARG_PARAM2);
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -174,6 +169,21 @@ public class UserFeedFragment extends Fragment {
                 imageChooserUI ();
             }
         });
+
+        fragmentUserFeed_IMGBTN_friends.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+            replaceFragment(MyFriendsFragment.newInstance ());
+            }
+        });
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getActivity ().getSupportFragmentManager ().beginTransaction ();
+//        transaction.add (R.id.frameLayout_Bottom,fragment,"my_friends_fragment");
+        transaction.replace (((ViewGroup)getView().getParent()).getId(),fragment,"my_friends_fragment");
+        transaction.addToBackStack (null);
+        transaction.commit ();
     }
 
     private void imageChooserUI() {
@@ -204,6 +214,7 @@ public class UserFeedFragment extends Fragment {
                 .addOnCompleteListener (new OnCompleteListener<Void> () {
                     public void onComplete(@NonNull Task<Void> task) {
                         // user is now signed out
+                        DatabaseManager.getInstance ().setUserOfflineDB();
                         DatabaseManager.getInstance ().userSignedOut ();
                         startActivity (new Intent (getActivity ().getApplicationContext (), SignInOptionsActivity.class));
                         BottomNavigationActivity.getInstance ().finish ();
@@ -219,9 +230,11 @@ public class UserFeedFragment extends Fragment {
 
     private void findViews() {
         fragmentUserFeed_IMGBTN_addFriend = view.findViewById (R.id.fragmentUserFeed_IMGBTN_addFriend);
+        fragmentUserFeed_IMGBTN_friends =view.findViewById (R.id.fragmentUserFeed_IMGBTN_friends);
         fragmentUserFeed_IMGBTN_exit = view.findViewById (R.id.fragmentUserFeed_IMGBTN_exit);
         fragmentUserFeed_CIMG_userCircularImage = view.findViewById (R.id.fragmentUserFeed_CIMG_userCircularImage);
         fragmentUserFeed_BTN_uploadImage = view.findViewById (R.id.fragmentUserFeed_BTN_uploadImage);
         fragmentUserFeed_TXT_username = view.findViewById (R.id.fragmentUserFeed_TXT_username);
     }
+
 }

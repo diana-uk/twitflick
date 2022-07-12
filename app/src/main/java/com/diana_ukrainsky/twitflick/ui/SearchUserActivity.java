@@ -1,35 +1,24 @@
 package com.diana_ukrainsky.twitflick.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.diana_ukrainsky.twitflick.R;
-import com.diana_ukrainsky.twitflick.adapter.UserAdapter;
+import com.diana_ukrainsky.twitflick.adapters.UserAdapter;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_searchUserByUsername;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
-import com.diana_ukrainsky.twitflick.models.CurrentUser;
 import com.diana_ukrainsky.twitflick.models.GeneralUser;
-import com.diana_ukrainsky.twitflick.models.User;
 import com.diana_ukrainsky.twitflick.utils.AlertUtils;
-import com.google.android.material.button.MaterialButton;
+import com.diana_ukrainsky.twitflick.utils.Constants;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchUserActivity extends AppCompatActivity {
@@ -101,6 +90,7 @@ public class SearchUserActivity extends AppCompatActivity {
                     //  userAdapter.setFilteredList (usersList);
                     searchUser_TXT_searchResult.setVisibility (View.INVISIBLE);
                     setAdapter (usersList);
+
                 }
                 else
                     searchUser_TXT_searchResult.setText (String.format ("%s%s", getString (R.string.no_users_found_with_username), username));

@@ -66,6 +66,7 @@ public class DataManager {
         currentUser.setUserId (DatabaseManager.getInstance ().getFirebaseUser ().getUid ());
         currentUser.setName (DatabaseManager.getInstance ().getFirebaseUser ().getDisplayName ());
         currentUser.setEmail (DatabaseManager.getInstance ().getFirebaseUser ().getEmail ());
+        currentUser.initAttributes ();
     }
 
     public void initReviewData(String reviewText, float ratingBarValue) {

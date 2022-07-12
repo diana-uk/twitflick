@@ -45,26 +45,76 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/fragmentUserFeed_IMGBTN_addFriend"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/circle_view_pink"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="10dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_add_friend" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:fontFamily="@font/aloevera"
-                    android:text="@string/add_friend"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/fragmentUserFeed_IMGBTN_addFriend"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/circle_view_pink"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_add_friend" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/fragmentUserFeed_TXT_addFriend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:fontFamily="@font/aloevera"
+                            android:text="@string/add_friend"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/fragmentUserFeed_IMGBTN_friends"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:background="@drawable/circle_view_pink"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_friends" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/fragmentUserFeed_TXT_friends"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="30dp"
+                            android:fontFamily="@font/aloevera"
+                            android:text="@string/friends"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+
+
+
+
+                </LinearLayout>
+
+
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/fragmentUserFeed_TXT_username"

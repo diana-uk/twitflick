@@ -22,6 +22,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class BottomNavigationActivity extends AppCompatActivity {
+
+    final Fragment friendsFeedFragment = new FriendsFeedFragment ();
+    final Fragment userFeedFragment = new UserFeedFragment ();
+    final Fragment notificationsFragment = new NotificationsFragment();
+    final FragmentManager fragmentManager = getSupportFragmentManager ();
+
     public static BottomNavigationActivity instance = null;
 
     private BottomNavigationView bottomNavigationView;
@@ -29,6 +35,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
     private FloatingActionButton bottomNavigation_FB_addReview;
     private ActivityBottomNavigationBinding binding;
 
+    private Fragment active = friendsFeedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,22 +72,33 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
 
     private void initView() {
-        getSupportFragmentManager ().beginTransaction ().replace (R.id.frameLayout_Bottom, new FriendsFeedFragment ()).commit ();
+        getSupportFragmentManager ()
+                .beginTransaction ()
+                .replace (R.id.frameLayout_Bottom,
+                new FriendsFeedFragment (),
+                "friends_feed_fragment")
+                .commit ();
+
         binding.bottomNavigationView.setSelectedItemId (R.id.bottomMenu_ITEM_friends);
         bottomNavigationView.setBackground (null);
+
+        setFragments();
 
         binding.bottomNavigationView.setOnItemSelectedListener (new NavigationBarView.OnItemSelectedListener () {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId ()) {
                     case R.id.bottomMenu_ITEM_friends:
-                            loadFragment (new FriendsFeedFragment ());
+                        loadFragment (friendsFeedFragment);
+                           // loadFragment (new FriendsFeedFragment (),"friends_feed_fragment");
                         break;
                     case R.id.bottomMenu_ITEM_user:
-                            loadFragment (new UserFeedFragment ());
+                        loadFragment (userFeedFragment);
+                           // loadFragment (UserFeedFragment.newInstance (),"user_feed_fragment");
                         break;
                     case R.id.bottomMenu_ITEM_notifications:
-                        loadFragment (new NotificationsFragment ());
+                        loadFragment (notificationsFragment);
+                        //loadFragment (new NotificationsFragment (),"notifications_fragment");
                         break;
 //                    case R.id.bottomMenu_ITEM_filter:
 //                        loadFragment(new FilterFragment ());
@@ -91,10 +109,21 @@ public class BottomNavigationActivity extends AppCompatActivity {
         });
     }
 
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager ();
+    private void loadFragment(Fragment fragment) {
+        fragmentManager.beginTransaction ().hide (active).show (fragment).commit ();
+        active = fragment;
+    }
+
+    private void setFragments() {
+        fragmentManager.beginTransaction().add(R.id.frameLayout_Bottom, userFeedFragment, "user_feed_fragment").hide(userFeedFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.frameLayout_Bottom, notificationsFragment, "notifications_fragment").hide(notificationsFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.frameLayout_Bottom,friendsFeedFragment, "friends_feed_fragment").commit();
+    }
+
+    public void loadFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = fragmentManager.beginTransaction ();
-        transaction.replace (R.id.frameLayout_Bottom, fragment);
+        transaction.hide (fragmentManager.findFragmentByTag ("user_feed_fragment"));
+        transaction.replace (R.id.frameLayout_Bottom, fragment,tag);
         transaction.commit ();
     }
 }

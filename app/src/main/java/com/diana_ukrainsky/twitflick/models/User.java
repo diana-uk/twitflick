@@ -8,15 +8,41 @@ public abstract class User {
     private String email;
     private String userId;
     private String userImage;
+    // To save in Firebase it's convenient to save HashMap<userId, FriendRequestData>
     private HashMap<String, FriendRequestData> friendRequestsSent;
     private HashMap<String,FriendRequestData> pendingFriendRequests;
-    //TODO: HashMap<String,Boolean> friends
-    private HashMap<String,Boolean> friends;
+    // To save friends it's convenient to save HashMap<userId,isUserActive>
+    private HashMap<String,Object> friends;
+     //All other attributes eg. number of friends are in Hashmap<nameOfAttribute,Object>
+    private HashMap<String,Object> attributes;
 
     public User() {
         initFriendRequestsSent ();
         initPendingFriendRequests ();
         initFriends();
+      //  initAttributes();
+    }
+
+
+
+    public void initFriendRequestsSent() {
+        friendRequestsSent = new HashMap<> ();
+    }
+
+    public void initPendingFriendRequests() {
+        pendingFriendRequests = new HashMap<> ();
+    }
+
+    private void initFriends() {
+        friends=new HashMap<> ();
+        //friends.put ("HEAD",true);
+    }
+
+    public void initAttributes() {
+        attributes = new HashMap<> ();
+        Integer START= 0;
+        attributes.put ("NumberOfFriends", START);
+        attributes.put ("online",true);
     }
 
     public String getEmail() {
@@ -34,18 +60,6 @@ public abstract class User {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    private void initFriends() {
-        friends=new HashMap<> ();
-    }
-
-    public void initFriendRequestsSent() {
-        friendRequestsSent = new HashMap<> ();
-    }
-
-   public void initPendingFriendRequests() {
-       pendingFriendRequests = new HashMap<> ();
-   }
 
     public String getName() {
         return name;
@@ -76,16 +90,18 @@ public abstract class User {
         return friendRequestsSent;
     }
 
-    public void setFriendRequestsSent(HashMap<String,FriendRequestData> friendRequestsSent) {
+    public User setFriendRequestsSent(HashMap<String, FriendRequestData> friendRequestsSent) {
         this.friendRequestsSent = friendRequestsSent;
+        return this;
     }
 
     public HashMap<String,FriendRequestData> getPendingFriendRequests() {
         return pendingFriendRequests;
     }
 
-    public void setPendingFriendRequests(HashMap<String,FriendRequestData> pendingFriendRequests) {
-        this.pendingFriendRequests =pendingFriendRequests;
+    public User setPendingFriendRequests(HashMap<String, FriendRequestData> pendingFriendRequests) {
+        this.pendingFriendRequests = pendingFriendRequests;
+        return this;
     }
 
     public void sendFriendRequest(FriendRequestData friendRequestData) {
@@ -96,13 +112,23 @@ public abstract class User {
 //        pendingFriendRequests.put (generalUser.getUserId (),generalUser);
 //    }
 
-    public HashMap<String, Boolean> getFriends() {
+    public HashMap<String, Object> getFriends() {
         return friends;
     }
 
-    public User setFriends(HashMap<String, Boolean> friends) {
+    public User setFriends(HashMap<String, Object> friends) {
         this.friends = friends;
         return this;
     }
+
+    public HashMap<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public User setAttributes(HashMap<String, Object> attributes) {
+        this.attributes = attributes;
+        return this;
+    }
+
 }
 

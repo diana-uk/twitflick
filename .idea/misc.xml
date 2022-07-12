@@ -7,15 +7,23 @@
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_user_picture_view.xml" value="0.1925" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_view.xml" value="0.1935" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/ic_accept.xml" value="0.1935" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/ic_friends.xml" value="0.2185" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/ic_no_picture.xml" value="0.3635" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/ic_offline.xml" value="0.16" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/round_corners_view.xml" value="0.1935" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/rounded_corners_border_view.xml" value="0.1935" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/activity_add_review.xml" value="0.1" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/activity_bottom_navigation.xml" value="0.1" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/activity_user_details.xml" value="0.3625" />
-        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/fragment_user_feed.xml" value="0.3625" />
-        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/friend_request_item_list.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/review_item_list.xml" value="0.75" />
-        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/user_item_list.xml" value="1.0" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/fragment_friend_details.xml" value="0.25" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/fragment_friends_feed.xml" value="0.3625" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/fragment_my_friends.xml" value="0.11851851851851852" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/fragment_user_feed.xml" value="0.22752808988764045" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/friend_request_item_list.xml" value="0.67" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/review_item_list.xml" value="0.33" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/layout/user_item_list.xml" value="0.33" />
+        <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/menu/bottom_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

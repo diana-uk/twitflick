@@ -1,3 +1,5 @@
+[README.md](https://github.com/MissDaizy/twitflick/files/9338555/README.md)
+[README.md](https://github.com/MissDaizy/twitflick/files/9338569/README.md)
 
 # twitflick
 
@@ -19,17 +21,16 @@ An Android app designed to allow sharing movie reviews between friends.
 ## Screenshots
 See your friends movies reviews:
 
-![App Screenshot](https://firebasestorage.googleapis.com/v0/b/twitflick-f330a.appspot.com/o/Twitflick%20Logo%2Ffriends_movie_reviews.gif?alt=media&token=21ef71e5-ceae-4578-97fa-c0558388bc88)
+![friends_movie_reviews](https://user-images.githubusercontent.com/68230600/184678623-28f78b72-221d-4a43-abb8-4f763075b070.gif)
 
 Search for movies and add reviews: 
 
-![App Screenshot](https://firebasestorage.googleapis.com/v0/b/twitflick-f330a.appspot.com/o/Twitflick%20Logo%2Fsearch_movie_and_add_review.gif?alt=media&token=99d8f3c7-afa0-401a-a034-889f64b131c0)
+![search_movie_and_add_review](https://user-images.githubusercontent.com/68230600/184678737-f99c5f38-c453-40d2-b3db-2fd0aa6ec4b6.gif)
 
 Accept friends requests: 
 
-![App Screenshot](https://firebasestorage.googleapis.com/v0/b/twitflick-f330a.appspot.com/o/Twitflick%20Logo%2Faccept_friend_requests.gif?alt=media&token=42c6b7f0-9a54-46e1-880b-886bc7085e5c)
+![accept_friend_requests](https://user-images.githubusercontent.com/68230600/184678811-53ab6b02-4d08-4115-adc3-a23fc85a0260.gif)
 
 See friends profile: 
 
-![App Screenshot](https://firebasestorage.googleapis.com/v0/b/twitflick-f330a.appspot.com/o/Twitflick%20Logo%2Ffriends_list.gif?alt=media&token=a708d9aa-7b8d-4966-805e-5d985cbc6357)
-
+![friends_list](https://user-images.githubusercontent.com/68230600/184678888-40fd10ab-5faf-45db-bc86-9dc3ce2fac32.gif)

@@ -20,4 +20,10 @@
     <string name="enter_valid_username">Please enter a valid username</string>
     <string name="username_required">Username is required</string>
     <string name="friends">Friends</string>
+    <string name="review_guideline">What the flick are you tweeting about?</string>
+    <string name="review_guideline_hint">What did you think about the movie/series?</string>
+    <string name="upload_image_guideline">Upload Image</string>
+    <string name="imdb_rating"># IMDB RATING</string>
+    <string name="movie_release_year">MOVIE RELEASE YEAR</string>
+    <string name="movie_name">MOVIE NAME</string>
 </resources>

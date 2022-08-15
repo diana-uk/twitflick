@@ -7,7 +7,7 @@ public class DataSP {
     private final String SHARED_PREF_KEY = "SHARED_KEY";
 
     private SharedPreferences sharedPreferences = null;
-    //Design Pattern singleton
+    // Design Pattern singleton
     private static DataSP instance;
 
     private DataSP(Context context) {

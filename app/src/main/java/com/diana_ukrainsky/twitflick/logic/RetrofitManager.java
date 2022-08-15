@@ -16,6 +16,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RetrofitManager {
+    // Design Pattern singleton
     private static RetrofitManager INSTANCE = null;
 
     private RetrofitService retrofitService;
@@ -25,7 +26,6 @@ public class RetrofitManager {
         setRetrofitService ();
         setJsonPlaceholders ();
     }
-
 
     public static RetrofitManager getInstance() {
         if (INSTANCE == null) {
@@ -100,4 +100,34 @@ public class RetrofitManager {
             }
         });
     }
+
+    public void searchMovieByIMDbId(MovieData movieItem, final Callback_retrofitResponse<MovieData> listener) {
+        Call<MovieData> call = jsonApiMovies.getMoviesByIMDbId ("",Constants.API_KEY,movieItem.getImdbId ());
+        call.enqueue (new Callback<MovieData> () {
+
+            @Override
+            public void onResponse(Call<MovieData> call, Response<MovieData> response) {
+                try {
+                    if (!response.isSuccessful ()) {
+                        Log.d ("pttt", "Response error  body : " + response.errorBody () + ", Response code: " + response.code ());
+                    } else {
+                        MovieData movieItem = response.body();
+                        Log.d (Constants.LOG_TAG,"id: "+movieItem.getImdbId ()+"genres: "+movieItem.getGenre ());
+                        listener.getResult (movieItem);
+                    }
+                } catch (Exception e) {
+                    // The response was no good...
+                    Log.d (Constants.LOG_TAG, "Response error  body : " + response.errorBody () + ", Response code: " + response.code ());
+                    Log.d (Constants.LOG_TAG, "exception: " + e.getMessage ());
+                    listener.getResult (null);
+                }
+            }
+            @Override
+            public void onFailure(Call<MovieData> call, Throwable t) {
+                Log.d (Constants.LOG_TAG, "Failure!!!, Message: " + t.getMessage ());
+            }
+        });
+
+    }
+
 }

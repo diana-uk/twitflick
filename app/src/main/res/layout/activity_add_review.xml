@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:fontFamily="@font/aloevera"
+            android:fontFamily="@font/syne"
             android:text="MOVIE NAME"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -54,8 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/aloevera"
-            android:text="What the flick are you tweeting about?"
+            android:fontFamily="@font/syne"
+            android:textStyle="bold"
+            android:text="@string/review_guideline"
             android:textColor="@color/black" />
 
         <EditText
@@ -73,8 +74,8 @@
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:textSize="15sp"
-            android:fontFamily="@font/aloevera"
-            android:hint="What did you think about the movie/series? "/>
+            android:fontFamily="@font/syne"
+            android:hint="@string/review_guideline_hint"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/addReview_IMGBTN_postReview"

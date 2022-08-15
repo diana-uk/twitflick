@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/search_view_background"
-            android:fontFamily="@font/aloevera"
+            android:fontFamily="@font/syne"
             app:queryHint="Search User by username"
             app:iconifiedByDefault="false"/>
 
@@ -34,6 +34,7 @@
             android:layout_gravity="center"
             android:textSize="20sp"
             android:text="@string/no_users"
+            android:fontFamily="@font/syne"
             android:textStyle="bold"/>
 
     </LinearLayout>

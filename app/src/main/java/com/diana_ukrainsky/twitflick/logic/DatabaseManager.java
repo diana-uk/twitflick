@@ -262,14 +262,13 @@ public class DatabaseManager {
 
 
     private void addToPendingFriendRequestsDB(FriendRequestData friendRequestSent, FriendRequestData pendingFriendRequest) {
-        HashMap<String, FriendRequestData> pendingFriendRequestMap = new HashMap<> ();
-        pendingFriendRequestMap.put (currentUser.getUserId (), pendingFriendRequest);
         databaseReference.child ("Users")
                 .child (friendRequestSent.getUsername ())
                 .child ("User")
                 .child (friendRequestSent.getUserId ())
                 .child ("pendingFriendRequests")
-                .setValue (pendingFriendRequestMap);
+                .child (currentUser.getUserId ())
+                .setValue (pendingFriendRequest);
     }
 
     private void removeFromFriendsRequestsSentDB(GeneralUser generalUser) {

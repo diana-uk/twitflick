@@ -3,6 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/font/aloevera_font.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/font/syne_font.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_add_review.xml" value="0.33" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_bottom_navigation.xml" value="0.5328947368421053" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_edit_my_review.xml" value="0.1953125" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_search_movie.xml" value="0.1953125" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_search_user.xml" value="0.1953125" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_sign_in_options.xml" value="0.1953125" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_sign_in_with_email.xml" value="0.1953125" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_sign_up.xml" value="0.1953125" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/activity_user_details.xml" value="0.5" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/fragment_filter.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/fragment_friend_details.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/fragment_friends_feed.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/fragment_my_friends.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/fragment_my_user.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/fragment_notifications.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/fragment_user_feed.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/friend_request_item_list.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/movie_item_list.xml" value="0.67" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/review_item_list.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/layout/user_item_list.xml" value="0.29791666666666666" />
+        <entry key="..\:/Users/diana/AndroidStudioProjects/Intro To Mobile Course/Final Project/Twitflick/Final Project/app/src/main/res/menu/bottom_menu.xml" value="0.29791666666666666" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_bordered_view.xml" value="0.1935" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_user_picture_view.xml" value="0.1925" />
         <entry key="..\:/Users/diana/Documents/Twitflick/Final Project/app/src/main/res/drawable/circle_view.xml" value="0.1935" />

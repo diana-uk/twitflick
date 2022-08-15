@@ -93,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:fontFamily="@font/aloevera"
+                android:fontFamily="@font/syne"
+                android:textStyle="bold"
                 android:text="***USERNAME***"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -123,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/aloevera"
+                    android:fontFamily="@font/syne"
                     android:text="***isActive***"
                     android:textColor="@color/black"
                     android:textSize="15sp" />

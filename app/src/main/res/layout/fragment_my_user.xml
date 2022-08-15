@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:background="#BDBDBD"
         android:orientation="vertical"
-        tools:context=".fragments.UserFeedFragment">
+        tools:context=".fragments.MyUserFragment">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -71,7 +71,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:fontFamily="@font/aloevera"
+                            android:fontFamily="@font/syne"
+                            android:textStyle="bold"
                             android:text="@string/add_friend"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
@@ -101,8 +102,9 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginStart="20dp"
-                            android:layout_marginEnd="30dp"
-                            android:fontFamily="@font/aloevera"
+                            android:layout_marginEnd="35dp"
+                            android:fontFamily="@font/syne"
+                            android:textStyle="bold"
                             android:text="@string/friends"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
@@ -121,7 +123,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/aloevera"
+                    android:fontFamily="@font/syne"
+                    android:textStyle="bold"
                     android:text="***USERNAME***"
                     android:textSize="15sp"
                     android:textColor="@color/black" />
@@ -144,7 +147,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="30dp"
-                    android:fontFamily="@font/aloevera"
+                    android:fontFamily="@font/syne"
+                    android:textStyle="bold"
                     android:text="Upload Image"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -160,8 +164,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:orientation="horizontal"></LinearLayout>
-
+            android:orientation="horizontal">
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

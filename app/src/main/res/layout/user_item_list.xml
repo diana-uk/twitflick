@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="FULL NAME"
-                        android:fontFamily="@font/aloevera"
+                        android:fontFamily="@font/syne"
                         android:textColor="#000"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -63,7 +63,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginStart="10dp"
                             android:text="USERNAME :"
-                            android:fontFamily="@font/aloevera"
+                            android:fontFamily="@font/syne"
                             android:textColor="#000"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -73,7 +73,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:text="***USERNAME***"
-                            android:fontFamily="@font/aloevera"
+                            android:fontFamily="@font/syne"
                             android:textColor="#000"
                             android:textSize="10sp"
                             android:textStyle="bold" />

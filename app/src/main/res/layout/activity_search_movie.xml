@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/search_view_background"
-            android:fontFamily="@font/aloevera"
+            android:fontFamily="@font/syne"
             app:queryHint="Search Movie by title"
             app:iconifiedByDefault="false"/>
 

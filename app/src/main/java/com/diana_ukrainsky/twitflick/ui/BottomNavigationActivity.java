@@ -16,7 +16,7 @@ import com.diana_ukrainsky.twitflick.R;
 import com.diana_ukrainsky.twitflick.databinding.ActivityBottomNavigationBinding;
 import com.diana_ukrainsky.twitflick.fragments.FriendsFeedFragment;
 import com.diana_ukrainsky.twitflick.fragments.NotificationsFragment;
-import com.diana_ukrainsky.twitflick.fragments.UserFeedFragment;
+import com.diana_ukrainsky.twitflick.fragments.MyUserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -24,7 +24,7 @@ import com.google.android.material.navigation.NavigationBarView;
 public class BottomNavigationActivity extends AppCompatActivity {
 
     final Fragment friendsFeedFragment = new FriendsFeedFragment ();
-    final Fragment userFeedFragment = new UserFeedFragment ();
+    final Fragment userFeedFragment = new MyUserFragment ();
     final Fragment notificationsFragment = new NotificationsFragment();
     final FragmentManager fragmentManager = getSupportFragmentManager ();
 

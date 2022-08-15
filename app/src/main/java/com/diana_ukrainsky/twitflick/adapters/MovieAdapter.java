@@ -15,13 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.diana_ukrainsky.twitflick.R;
+import com.diana_ukrainsky.twitflick.callbacks.Callback_retrofitResponse;
 import com.diana_ukrainsky.twitflick.logic.DataManager;
+import com.diana_ukrainsky.twitflick.logic.RetrofitManager;
 import com.diana_ukrainsky.twitflick.models.MovieData;
 import com.diana_ukrainsky.twitflick.retrofit.RetrofitService;
 import com.diana_ukrainsky.twitflick.service.JsonApiMovies;
 import com.diana_ukrainsky.twitflick.ui.AddReviewActivity;
 import com.diana_ukrainsky.twitflick.utils.Constants;
 import com.diana_ukrainsky.twitflick.utils.ImageUtils;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -72,26 +75,23 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return viewHolder;
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final MovieData movieItem = movieDataList.get (position);
+         MovieData movieItem = movieDataList.get (position);
         switch (getItemViewType(position)) {
             case ITEM:
                 MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
-
+                // Set TextView of movie name
                 movieViewHolder.movieItemList_TXT_movieName.setText (movieItem.getTitle ());
-                movieViewHolder.movieItemList_TXT_movieDate.setText (movieItem.getReleaseDate ());
-
+                // Set TextView of movie release date
+                movieViewHolder.movieItemList_TXT_movieDate.setText (movieItem.getYear ());
+                // Set Imageview of movie poster
                 ImageUtils.setImageUI (movieViewHolder.movieItemList_IMG_movieImage,movieItem.getPoster ());
 
-                movieViewHolder.itemView.setOnClickListener (new View.OnClickListener () {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d (Constants.LOG_TAG, "movie clicked title:  "+movieItem.getTitle ()+" genres: "+movieItem.getGenre ());
-                        searchMovieByIMDbId(movieItem);
-                    }
-                });
+                movieViewHolder.movieItemList_TXT_movieImdbRating.setText ("Loading IMDB Rating...");
+
+                searchMovieByIMDbId(movieItem,movieViewHolder);
+
                 break;
 
             case LOADING:
@@ -101,34 +101,24 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private void searchMovieByIMDbId(MovieData movie) {
-            RetrofitService retrofitService = new RetrofitService ();
-
-            JsonApiMovies jsonApiMovies = retrofitService.getRetrofit ().create (JsonApiMovies.class);
-
-            Call<MovieData> call = jsonApiMovies.getMoviesByIMDbId ("","407f78ba",movie.getImdbId ());
-            call.enqueue (new Callback<MovieData> () {
-
-                @Override
-                public void onResponse(Call<MovieData> call, Response<MovieData> response) {
-                    if(!response.isSuccessful()) {
-                        Log.d ("pttt","hello"+response.message ());
-                    }
-                    else {
-                        MovieData movie = response.body();
-                        Log.d ("pttt","id: "+movie.getImdbId ()+"genres: "+movie.getGenre ());
-
-                        putInBundle (movie);
-                        startAddReviewActivity ();
-                    }
+    private void searchMovieByIMDbId(MovieData movieItem, MovieViewHolder movieViewHolder) {
+        RetrofitManager.getInstance ().searchMovieByIMDbId (movieItem, new Callback_retrofitResponse<MovieData> () {
+            @Override
+            public void getResult(MovieData movieItem) {
+                if (movieItem != null) {
+                    // Set TextView of movie Imdb rating
+                    movieViewHolder.movieItemList_TXT_movieImdbRating.setText (movieItem.getImdbRating ());
+                    movieViewHolder.itemView.setOnClickListener (new View.OnClickListener () {
+                        @Override
+                        public void onClick(View v) {
+                            putInBundle (movieItem);
+                            startAddReviewActivity ();
+                        }
+                    });
                 }
-                @Override
-                public void onFailure(Call<MovieData> call, Throwable t) {
-                    Log.d ("pttt", "Failure!!!, Message: " + t.getMessage ());
-                }
-            });
-
-        }
+            }
+        });
+    }
 
     private void saveReviewData() {
         DataManager.getInstance ().saveReviewData();
@@ -207,8 +197,9 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
         ImageView movieItemList_IMG_movieImage;
-        TextView movieItemList_TXT_movieName;
-        TextView movieItemList_TXT_movieDate;
+        MaterialTextView movieItemList_TXT_movieName;
+        MaterialTextView movieItemList_TXT_movieDate;
+        MaterialTextView movieItemList_TXT_movieImdbRating;
 
 
         public MovieViewHolder(@NonNull View itemView) {
@@ -216,6 +207,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             movieItemList_IMG_movieImage = itemView.findViewById (R.id.movieItemList_IMG_movieImage);
             movieItemList_TXT_movieName = itemView.findViewById (R.id.movieItemList_TXT_movieName);
             movieItemList_TXT_movieDate = itemView.findViewById (R.id.movieItemList_TXT_movieDate);
+            movieItemList_TXT_movieImdbRating = itemView.findViewById (R.id.movieItemList_TXT_movieImdbRating);
         }
     }
 
@@ -226,7 +218,6 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public LoadingViewHolder(View itemView) {
             super(itemView);
             progressBar = itemView.findViewById(R.id.loadmore_progress);
-
         }
     }
 

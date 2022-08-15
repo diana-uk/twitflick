@@ -43,10 +43,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:fontFamily="@font/aloevera"
-                        android:text="MOVIE NAME"
+                        android:fontFamily="@font/syne"
+                        android:text="@string/movie_name"
                         android:textColor="#000"
-                        android:textSize="20sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -54,8 +54,36 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:fontFamily="@font/aloevera"
-                        android:text="MOVIE DATE" />
+                        android:textSize="13sp"
+                        android:fontFamily="@font/syne"
+                        android:text="@string/movie_release_year" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_imdb_logo" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/movieItemList_TXT_movieImdbRating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_gravity="center"
+                            android:textSize="13dp"
+                            android:fontFamily="@font/syne"
+                            android:text="@string/imdb_rating"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

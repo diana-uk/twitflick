@@ -9,11 +9,9 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -23,7 +21,6 @@ import android.widget.ImageButton;
 
 import com.diana_ukrainsky.twitflick.R;
 import com.diana_ukrainsky.twitflick.callbacks.Callback_setUsername;
-import com.diana_ukrainsky.twitflick.databinding.FragmentUserFeedBinding;
 import com.diana_ukrainsky.twitflick.logic.DatabaseManager;
 import com.diana_ukrainsky.twitflick.ui.BottomNavigationActivity;
 import com.diana_ukrainsky.twitflick.ui.SearchUserActivity;
@@ -35,7 +32,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.StorageReference;
@@ -44,18 +40,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserFeedFragment#newInstance} factory method to
+ * Use the {@link MyUserFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserFeedFragment extends Fragment {
-    private ImageButton fragmentUserFeed_IMGBTN_addFriend;
-    private ImageButton fragmentUserFeed_IMGBTN_friends;
-    private ImageButton fragmentUserFeed_IMGBTN_exit;
-    private CircleImageView fragmentUserFeed_CIMG_userCircularImage;
-    private MaterialButton fragmentUserFeed_BTN_uploadImage;
-    private MaterialTextView fragmentUserFeed_TXT_username;
+public class MyUserFragment extends Fragment {
+    private ImageButton fragmentMyUser_IMGBTN_addFriend;
+    private ImageButton fragmentMyUser_IMGBTN_friends;
+    private ImageButton fragmentMyUser_IMGBTN_exit;
+    private CircleImageView fragmentMyUser_CIMG_userCircularImage;
+    private MaterialButton fragmentMyUser_BTN_uploadImage;
+    private MaterialTextView fragmentMyUser_TXT_username;
 
-    private FragmentUserFeedBinding binding;
+    private ViewDataBinding binding;
     private View view;
 
     private static final String tag = "user_feed_fragment";
@@ -69,12 +65,12 @@ public class UserFeedFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public UserFeedFragment() {
+    public MyUserFragment() {
         // Required empty public constructor
     }
 
-    public static UserFeedFragment newInstance() {
-        UserFeedFragment fragment = new UserFeedFragment ();
+    public static MyUserFragment newInstance() {
+        MyUserFragment fragment = new MyUserFragment ();
         Bundle args = new Bundle ();
         fragment.setArguments (args);
         return fragment;
@@ -93,7 +89,7 @@ public class UserFeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate (inflater, R.layout.fragment_user_feed, container, false);
+        binding = DataBindingUtil.inflate (inflater, R.layout.fragment_my_user, container, false);
         view = binding.getRoot ();
 
         findViews ();
@@ -109,7 +105,7 @@ public class UserFeedFragment extends Fragment {
     }
 
     private void setNoImageUI() {
-        fragmentUserFeed_CIMG_userCircularImage.setImageResource (R.drawable.ic_no_picture);
+        fragmentMyUser_CIMG_userCircularImage.setImageResource (R.drawable.ic_no_picture);
     }
 
     private void setUsernameUI() {
@@ -117,9 +113,9 @@ public class UserFeedFragment extends Fragment {
             @Override
             public void setUsername(String username) {
                 if (username != null)
-                    fragmentUserFeed_TXT_username.setText (username);
+                    fragmentMyUser_TXT_username.setText (username);
                 else
-                    fragmentUserFeed_TXT_username.setText (getString (R.string.no_username));
+                    fragmentMyUser_TXT_username.setText (getString (R.string.no_username));
             }
         });
     }
@@ -135,7 +131,7 @@ public class UserFeedFragment extends Fragment {
                 if (getActivity() == null) {
                     return;
                 }
-                ImageUtils.setImageUI (getContext (),uri,fragmentUserFeed_CIMG_userCircularImage);
+                ImageUtils.setImageUI (getContext (),uri, fragmentMyUser_CIMG_userCircularImage);
             }
         }).addOnFailureListener(new OnFailureListener () {
             @Override
@@ -150,27 +146,27 @@ public class UserFeedFragment extends Fragment {
     }
 
     private void setListeners() {
-        fragmentUserFeed_IMGBTN_addFriend.setOnClickListener (new View.OnClickListener () {
+        fragmentMyUser_IMGBTN_addFriend.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
                 startSearchUserActivity ();
             }
         });
-        fragmentUserFeed_IMGBTN_exit.setOnClickListener (new View.OnClickListener () {
+        fragmentMyUser_IMGBTN_exit.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
                 signOutClicked ();
             }
         });
 
-        fragmentUserFeed_BTN_uploadImage.setOnClickListener (new View.OnClickListener () {
+        fragmentMyUser_BTN_uploadImage.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
                 imageChooserUI ();
             }
         });
 
-        fragmentUserFeed_IMGBTN_friends.setOnClickListener (new View.OnClickListener () {
+        fragmentMyUser_IMGBTN_friends.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
             replaceFragment(MyFriendsFragment.newInstance ());
@@ -202,7 +198,7 @@ public class UserFeedFragment extends Fragment {
                     if (data != null && data.getData () != null) {
                         Uri selectedImageUri = data.getData ();
                         Bitmap selectedImageBitmap = ImageUtils.setImageBitmapFromUriUI (getContext (), selectedImageUri);
-                        fragmentUserFeed_CIMG_userCircularImage.setImageBitmap (selectedImageBitmap);
+                        fragmentMyUser_CIMG_userCircularImage.setImageBitmap (selectedImageBitmap);
                         DatabaseManager.getInstance ().uploadFileToCloudStorage (getContext (), selectedImageUri);
                     }
                 }
@@ -229,12 +225,12 @@ public class UserFeedFragment extends Fragment {
     }
 
     private void findViews() {
-        fragmentUserFeed_IMGBTN_addFriend = view.findViewById (R.id.fragmentUserFeed_IMGBTN_addFriend);
-        fragmentUserFeed_IMGBTN_friends =view.findViewById (R.id.fragmentUserFeed_IMGBTN_friends);
-        fragmentUserFeed_IMGBTN_exit = view.findViewById (R.id.fragmentUserFeed_IMGBTN_exit);
-        fragmentUserFeed_CIMG_userCircularImage = view.findViewById (R.id.fragmentUserFeed_CIMG_userCircularImage);
-        fragmentUserFeed_BTN_uploadImage = view.findViewById (R.id.fragmentUserFeed_BTN_uploadImage);
-        fragmentUserFeed_TXT_username = view.findViewById (R.id.fragmentUserFeed_TXT_username);
+        fragmentMyUser_IMGBTN_addFriend = view.findViewById (R.id.fragmentUserFeed_IMGBTN_addFriend);
+        fragmentMyUser_IMGBTN_friends =view.findViewById (R.id.fragmentUserFeed_IMGBTN_friends);
+        fragmentMyUser_IMGBTN_exit = view.findViewById (R.id.fragmentUserFeed_IMGBTN_exit);
+        fragmentMyUser_CIMG_userCircularImage = view.findViewById (R.id.fragmentUserFeed_CIMG_userCircularImage);
+        fragmentMyUser_BTN_uploadImage = view.findViewById (R.id.fragmentUserFeed_BTN_uploadImage);
+        fragmentMyUser_TXT_username = view.findViewById (R.id.fragmentUserFeed_TXT_username);
     }
 
 }

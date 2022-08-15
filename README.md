@@ -1,5 +1,3 @@
-[README.md](https://github.com/MissDaizy/twitflick/files/9338555/README.md)
-[README.md](https://github.com/MissDaizy/twitflick/files/9338569/README.md)
 
 # twitflick
 

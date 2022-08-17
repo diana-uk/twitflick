@@ -8,7 +8,7 @@ An Android app designed to allow sharing movie reviews between friends.
 
 ## Features
 
-- Add a movie reviews.
+- Add movie reviews.
 - See all your friends reviews updated realtime in descending order by post time.
 - Add friends and to choose whether to accept or decline a friend request.
 - See user profile and see whether the user is currently online/offline.
